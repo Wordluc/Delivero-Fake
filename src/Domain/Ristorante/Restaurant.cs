@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Ristorante
 {
-    partial class Restaurant
+    public partial class Restaurant
     {
         public Guid Id {get; set;}
-        public required string Name { get; set;}
-        public required Address Address { get; set; }
-        public List<Plate> Menu { get; set; } = new();
+        public string? Name { get; private set;}
+        public Address? Address { get; private set; }
+        public List<Plate> Menu { get; private set; } = new();
 
     }
+    public record Address(string Via, int AddressNumber);
 }

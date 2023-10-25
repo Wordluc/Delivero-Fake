@@ -1,15 +1,15 @@
 ﻿namespace Domain.Ristorante
 {
-    internal class Plate
+    public class Plate
     {
-        public required Guid Id { get; internal set; }
-        public required string NamePlate { get; internal set; }
-        public required string Type {  get; internal set; }
-        public required float Cost { get; internal set; }
-        public required List<StepRecepi> Recipe { get; internal set; }
+        public required Guid Id { get; set; }
+        public required string NamePlate { get; set; }
+        public required string Type {  get; set; }
+        public required float Cost { get; set; }
+        public required List<StepRecepi> Recipe { get; set; }
     }
-    internal record StepRecepi(string Description, int NeededTime, List<Ingredient>? Ingredients);
-    internal record Ingredient(string Name, List<Intolerance>? Intolerances);
-    internal record Intolerance(string Name, string Description);
+    public record StepRecepi(string Description, int NeededTime, List<Ingredient>? IIngredients);
+    public record Ingredient(string Name, List<Intolerance>? Intolerances);
+    public record Intolerance(string Name, string Description);
 
 }

@@ -12,7 +12,6 @@ namespace Domain.Ristorante.Validator
         public ValidatorPlate() {
             RuleFor(x => x.Cost).GreaterThan(0);
             RuleFor(x => x.NamePlate).NotEmpty();
-            RuleForEach(x => x.Recipe).SetValidator(new ValidatorStepRecepi());
         }
     }
 }

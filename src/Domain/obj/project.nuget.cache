@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "lxc1juv2Ey29QyJLJ2sKe4KJI7pmKbDlggrMYYuuNlnGuby4sOiJ5RY3h+CV1JtXS/Hyi6brSDXagCNrf4rWqw==",
+  "dgSpecHash": "zzXffYq/zcfPPKbjgAg7P0fTwLwALCTCpZUNx/MkzW+pnkNOYiXvzpXpGHZHfuhWtrpqNzLsyxx1VdKf2WILhw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Luca Frangiamore\\Desktop\\Training\\DDD\\Delivero fake\\Delivero-Fake\\src\\Domain\\Domain.csproj",
+  "projectFilePath": "C:\\Users\\frang\\Desktop\\Training\\Delivero Fake\\src\\Domain\\Domain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Luca Frangiamore\\.nuget\\packages\\fluentvalidation\\11.8.0\\fluentvalidation.11.8.0.nupkg.sha512"
+    "C:\\Users\\frang\\.nuget\\packages\\fluentvalidation\\11.8.0\\fluentvalidation.11.8.0.nupkg.sha512"
   ],
   "logs": []
 }
