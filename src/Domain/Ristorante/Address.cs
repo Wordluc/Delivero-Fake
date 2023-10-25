@@ -1,8 +1,4 @@
 ﻿namespace Domain.Ristorante
 {
-    public class Address
-    {
-        public required string Via { get; set; }
-        public required string AddressNumber { get; set; }
-    }
+    internal record Address(string Via, int AddressNumber );
 }

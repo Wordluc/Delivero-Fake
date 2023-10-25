@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Ristorante
 {
-    class Restaurant
+    partial class Restaurant
     {
         public Guid Id {get; set;}
         public required string Name { get; set;}
         public required Address Address { get; set; }
-        public required List<MenuItems> Menu {get; set; }
+        public List<Plate> Menu { get; set; } = new();
 
     }
 }

@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Core",
+    "\\Domain"
   ],
+  "SelectedNode": "\\Core\\Core.sln",
   "PreviewInSolutionExplorer": false
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Ristorante
 {
-    public enum TypePlate
+    internal enum TypePlate
     {
         First, Second, Dessert
     }
