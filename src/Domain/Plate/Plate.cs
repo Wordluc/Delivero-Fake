@@ -1,11 +1,11 @@
-﻿namespace Domain.Ristorante
+﻿namespace Domain.Plate
 {
 #pragma warning disable CS8618
-    public class Plate
+    public partial class Plate
     {
-        public Guid Id { get;  internal set; }
+        public Guid Id { get; internal set; }
         public string NamePlate { get; internal set; }
-        public string Type {  get; internal set; }
+        public string Type { get; internal set; }
         public float Cost { get; internal set; }
         public List<StepRecepi> Recipe { get; internal set; }
     }

@@ -19,7 +19,7 @@ namespace Domain.Ristorante
                 Id = Guid.NewGuid(),
                 Name = name,
                 Address = new Address(via, addressNumber),
-                Menu=new()
+                IdsPlate=new()
             };
             if (new ValidatorRestaurant().Validate(newRestaurant).IsValid)
                 return newRestaurant;
@@ -32,6 +32,11 @@ namespace Domain.Ristorante
             if (new ValidatorRestaurant().Validate(this).IsValid)
                 return true;
             return false;
+        }
+
+        public void AddPlate(Guid idPlate)
+        {
+            IdsPlate.Add(idPlate);
         }
     }
 }

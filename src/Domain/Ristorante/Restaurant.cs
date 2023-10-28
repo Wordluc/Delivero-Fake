@@ -12,7 +12,7 @@ namespace Domain.Ristorante
         public Guid Id {get; internal set;}
         public string Name { get; internal set;}
         public Address Address { get; internal set; }
-        public List<Plate> Menu { get; internal set; } 
+        public List<Guid> IdsPlate { get; internal set; } 
 
     }
     public record Address(string Via, int AddressNumber);
