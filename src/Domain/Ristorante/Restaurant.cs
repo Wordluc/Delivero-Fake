@@ -9,10 +9,10 @@ namespace Domain.Ristorante
 #pragma warning disable CS8618
     public partial class Restaurant
     {
-        public Guid Id {get; internal set;}
+        public Guid Id {get; internal set;}= Guid.NewGuid();    
         public string Name { get; internal set;}
         public Address Address { get; internal set; }
-        public List<Guid> IdsPlate { get; internal set; } 
+        public List<Dish> Menu { get; internal set; } = new();
 
     }
     public record Address(string Via, int AddressNumber);
