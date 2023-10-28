@@ -1,12 +1,13 @@
 ﻿namespace Domain.Ristorante
 {
+#pragma warning disable CS8618
     public class Plate
     {
-        public required Guid Id { get; set; }
-        public required string NamePlate { get; set; }
-        public required string Type {  get; set; }
-        public required float Cost { get; set; }
-        public required List<StepRecepi> Recipe { get; set; }
+        public Guid Id { get;  internal set; }
+        public string NamePlate { get; internal set; }
+        public string Type {  get; internal set; }
+        public float Cost { get; internal set; }
+        public List<StepRecepi> Recipe { get; internal set; }
     }
     public record StepRecepi(string Description, int NeededTime, List<Ingredient>? IIngredients);
     public record Ingredient(string Name, List<Intolerance>? Intolerances);

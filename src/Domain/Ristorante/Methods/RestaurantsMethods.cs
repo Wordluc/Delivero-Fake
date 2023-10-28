@@ -18,7 +18,8 @@ namespace Domain.Ristorante
             {
                 Id = Guid.NewGuid(),
                 Name = name,
-                Address = new Address(via, addressNumber)
+                Address = new Address(via, addressNumber),
+                Menu=new()
             };
             if (new ValidatorRestaurant().Validate(newRestaurant).IsValid)
                 return newRestaurant;

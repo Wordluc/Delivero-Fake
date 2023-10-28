@@ -9,7 +9,7 @@ namespace Domain.Ristorante
 {
     public partial class Restaurant
     {
-        public bool AddPlate(string namePlate, float cost, string type)
+        public Guid AddPlate(string namePlate, float cost, string type)
         {
             var newPlate = new Plate()
             {
@@ -23,9 +23,9 @@ namespace Domain.Ristorante
             {
                 
                 Menu.Add(newPlate);
-                return true;
+                return newPlate.Id;
             }
-            return false;
+            return default;
         }
         public bool DeletePlate(Guid idPlate)
         {
@@ -40,11 +40,15 @@ namespace Domain.Ristorante
             var Plate = Menu.FirstOrDefault(x => x.Id == idPlate);
             if (Plate is null) return false;
 
-            if (neededTime < 0) return false;
-            if (description is null) return false;
-            foreach (var i in ingredients)
-                if (i is null) return false;
+            if (neededTime <= 0) return false;
+            if (string.IsNullOrEmpty(description)) return false;
 
+            foreach (var ingredient in ingredients)
+            {
+                if (ingredient.Name is null) return false;
+                if (string.IsNullOrEmpty(ingredient.Name)) return false;
+            }
+                
             var Recepi = new StepRecepi(description, neededTime, ingredients);
             Plate.Recipe.Add(Recepi);
             return true;
