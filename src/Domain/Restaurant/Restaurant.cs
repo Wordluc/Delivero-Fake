@@ -13,8 +13,7 @@ namespace Domain.Ristorante
         public Guid Id {get; internal set;}= Guid.NewGuid();    
         public string Name { get; internal set;}
         public Address Address { get; internal set; }
-        public List<Dish> Menu { get; internal set; } = new();
+        public virtual List<Dish> Menu { get; internal set; } = new();
 
     }
-
 }

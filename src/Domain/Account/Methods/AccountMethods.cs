@@ -66,13 +66,13 @@ namespace Domain.Account
             Phone = number;
             return true;
         }
-        public bool SetAddress(string via,int number)
+        public bool SetAddress(string city,string via,int number)
         {
             if (string.IsNullOrEmpty(via)) return false;
             if (via.Length < 2 || via.Length > 20) return false;
             if(number <= 0)return false;
 
-            Address = new(via, number);
+            Address = new(city,via, number);
             return true;
         }
     }

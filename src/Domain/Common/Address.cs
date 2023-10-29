@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Domain.Common
 {
-     public record Address(string Via, int AddressNumber);
+     public record Address(string City,string Via, int AddressNumber);
 }
