@@ -22,17 +22,17 @@ namespace DomainTests
             restaurant.SetAddress("", -200).Should().Be(false);
         }
         [Fact]
-        public void CreateDish_WithIncorrectName_ShouldReturnNull()
+        public void CreateDish_WithIncorrectName_ShouldReturnFalse()
         {
             Restaurant restaurant = Restaurant.New("trattotrai", "Via bla bla", 55)!;
-            restaurant.AddNewDish("", 10, "First").Should().BeNull();
+            restaurant.AddNewDish("", 10, "First").Should().BeFalse();
 
         }
         [Fact]
-        public void CreateDish_WithIncorrectCost_ShouldReturnNull()
+        public void CreateDish_WithIncorrectCost_ShouldReturnFalse()
         {
             Restaurant restaurant = Restaurant.New("trattotrai", "Via bla bla", 55)!;
-            restaurant.AddNewDish("cous cous", -10, "First").Should().BeNull();
+            restaurant.AddNewDish("cous cous", -10, "First").Should().BeFalse();
 
         }
         [Fact]
@@ -43,7 +43,7 @@ namespace DomainTests
 
         }
         [Fact]
-        public void CreateDish_WithUsedName()
+        public void CreateDish_WithExistingUsedname_GetNull()
         {
             Restaurant restaurant = Restaurant.New("trattotrai", "Via bla bla", 55)!;
             restaurant.AddNewDish("cous cous", 10, "First");
@@ -52,35 +52,46 @@ namespace DomainTests
         }
 
         [Fact]
-        public void CreatePlate_WithIncorrectIngredientsName()
+        public void CreatePlate_WithIncorrectIngredientsName_GetFalse()
         {
             Restaurant restaurant = Restaurant.New("trattoria da luca", "Via bla bla", 55)!;
-            var newPlate= restaurant.AddNewDish("cous cous",10,"first");
+            var newPlate= restaurant.AddNewDish("cous cous",10,"First");
 
             var ingredients = new List<Ingredient>()
             {
                 new("",null),
                 new(null!,new(){new("lattosio","vai in bagno")})
             };
-            var r = restaurant.AddStepToDishsRecepi(newPlate,"mescolare", 10, ingredients);
+            var r = restaurant.AddStepToDishsRecepi("cous cous", "mescolare", 10, ingredients);
 
             r.Should().Be(false);
         }
         [Fact]
-        public void CreateRecepi_WithIncorrectDescriptionStep()
+        public void CreateRecepi_WithIncorrectDescriptionStep_GetFalse()
         {
             Restaurant restaurant = Restaurant.New("trattoria da luca", "Via bla bla", 55)!;
-            var newPlate = restaurant.AddNewDish("cous cous", 10, "first");
+            var newPlate = restaurant.AddNewDish("cous cous", 10, "First");
 
             var ingredients = new List<Ingredient>()
             {
                 new("patate",null),
                 new("latte",new(){new("lattosio","vai in bagno")})
             };
-            var r = restaurant.AddStepToDishsRecepi(newPlate,"", 10, ingredients);
+            var r = restaurant.AddStepToDishsRecepi("cous cous", "", 10, ingredients);
 
             r.Should().Be(false);
         }
-         
+
+        [Fact]
+        public void ChangeCost_WithIncorrectCorrectCost_KeepSameOldCost()
+        {
+            Restaurant restaurant = Restaurant.New("trattoria da luca", "Via bla bla", 55)!;
+            var newPlate = restaurant.AddNewDish("cous cous", 10, "First");
+
+            restaurant.SetDishCost("cous cous",-20);
+
+            restaurant.GetDish("cous cous")!.Cost.Should().Be(10);
+        }
+
     }
 }

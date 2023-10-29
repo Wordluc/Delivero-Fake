@@ -47,7 +47,6 @@ namespace DomainTests
             account.Should().NotBeNull();
             account!.SetAddress("via cewiju", 10);
             account.Address.Should().Be(new Address("via cewiju", 10));
-
         }
     }
 }

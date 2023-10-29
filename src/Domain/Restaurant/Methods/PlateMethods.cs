@@ -10,7 +10,7 @@ namespace Domain.Ristorante
     public partial class Restaurant
     {
 
-        public Dish? AddNewDish(string nameDish, float cost, string type)
+        public bool? AddNewDish(string nameDish, float cost, string type)
         {
             if (GetDish(nameDish) is not null) return null;
 
@@ -19,45 +19,65 @@ namespace Domain.Ristorante
                 SetDishName(newDish, nameDish) &&
                 SetDishCost(newDish, cost) &&
                 SetDishType (newDish, type))
-               )return null;
+               )return false;
 
             Menu.Add(newDish);
-            return newDish;
+            return true;
 
         }
         public bool DeleteDish(Dish dish)
         {
             return Menu.Remove(dish);
         }
-
-        public bool AddStepToDishsRecepi(Dish dish,string description, int neededTime, List<Ingredient> ingredients)
+        public Dish? GetDish(string nomeDish)
         {
-            if (!this.Menu.Contains(dish)) return false;
-            if (neededTime <= 0) return false;
-            if (string.IsNullOrEmpty(description)) return false;
+            return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
+        }
 
-            foreach (var ingredient in ingredients)
+        public bool AddStepToDishsRecepi(string nameDish,string description, int neededTime, List<Ingredient> ingredients)
+        {
+            if (GetDish(nameDish) is Dish dish)
             {
-                if (ingredient.Name is null) return false;
-                if (string.IsNullOrEmpty(ingredient.Name)) return false;
+                if (neededTime <= 0) return false;
+                if (string.IsNullOrEmpty(description)) return false;
+
+                foreach (var ingredient in ingredients)
+                {
+                    if (ingredient.Name is null) return false;
+                    if (string.IsNullOrEmpty(ingredient.Name)) return false;
+                }
+
+                var Recepi = new StepRecepi(description, neededTime, ingredients);
+                dish.Recipe.Add(Recepi);
+                return true;
             }
-                
-            var Recepi = new StepRecepi(description, neededTime, ingredients);
-            dish.Recipe.Add(Recepi);
-            return true;
+            return false;
         }
         public void DeleteDishRecepi(Dish dish) {
             dish.Recipe = new();
         }
-        public bool SetDishCost(Dish dish,float cost)
-        {
 
+        public bool SetDishCost(string nameDish,float cost)
+        {
+            if (GetDish(nameDish) is Dish d)
+                return SetDishCost(d, cost);
+            return false;
+        }
+        private bool SetDishCost(Dish dish,float cost)
+        {
             if (cost <= 0) return false;
 
             dish.Cost = cost;
             return true;
         }
-        public bool SetDishName(Dish dish,string name)
+
+        public bool SetDishName(string oldName, string newName)
+        {
+            if (GetDish(oldName) is Dish d)
+                return SetDishName(d, newName);
+            return false;
+        }
+        private bool SetDishName(Dish dish,string name)
         {
             if (GetDish(name) is not null) return false;
             if (string.IsNullOrEmpty(name))return false;
@@ -66,7 +86,8 @@ namespace Domain.Ristorante
             dish.NameDish = name;
             return true;
         }
-        public bool SetDishType(Dish dish, string type)
+
+        private bool SetDishType(Dish dish, string type)
         {
             if (string.IsNullOrEmpty(type)) return false;
             if (!Enum.TryParse(type, false, out TypeDish r)) return false;
@@ -74,8 +95,6 @@ namespace Domain.Ristorante
             dish.Type=r;
             return true;
         }
-        public Dish? GetDish(string nomeDish) {
-            return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
-        }
+        
     }
 }
