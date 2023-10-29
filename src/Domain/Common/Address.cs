@@ -4,10 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Ristorante
+namespace Domain.Common
 {
-    public enum TypeDish
-    {
-        First,Second,Desert
-    }
+     public record Address(string Via, int AddressNumber);
 }

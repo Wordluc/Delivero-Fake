@@ -10,7 +10,7 @@ namespace Domain.Ristorante
     public partial class Restaurant
     {
 
-        public Dish AddNewDish(string nameDish, float cost, string type)
+        public Dish? AddNewDish(string nameDish, float cost, string type)
         {
             if (GetDish(nameDish) is not null) return null;
 
@@ -69,7 +69,7 @@ namespace Domain.Ristorante
         public bool SetDishType(Dish dish, string type)
         {
             if (string.IsNullOrEmpty(type)) return false;
-            if (!TypeDish.TryParse(type, false, out TypeDish r)) return false;
+            if (!Enum.TryParse(type, false, out TypeDish r)) return false;
 
             dish.Type=r;
             return true;

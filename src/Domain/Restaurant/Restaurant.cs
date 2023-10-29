@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,5 @@ namespace Domain.Ristorante
         public List<Dish> Menu { get; internal set; } = new();
 
     }
-    public record Address(string Via, int AddressNumber);
+
 }

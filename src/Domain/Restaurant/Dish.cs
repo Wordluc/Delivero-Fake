@@ -13,5 +13,9 @@
     public record StepRecepi(string Description, int NeededTime, List<Ingredient>? IIngredients);
     public record Ingredient(string Name, List<Intolerance>? Intolerances);
     public record Intolerance(string Name, string Description);
-
+    public enum TypeDish
+    {
+        First, Second, Desert
+    }
 }
+

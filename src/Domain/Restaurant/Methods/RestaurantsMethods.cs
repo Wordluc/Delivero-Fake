@@ -1,4 +1,5 @@
 ﻿
+using Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Domain.Ristorante
     public partial class Restaurant
     {
 
-        public static Restaurant? CreateRestaurant(string name, string via, int addressNumber)
+        public static Restaurant? New(string name, string via, int addressNumber)
         {
             if (via is null) return null;
             if(addressNumber <=0) return null;
