@@ -25,54 +25,40 @@ namespace Domain.Account
 
             return newAccount;
         }
-        private bool SetName(string name) {
-            if (string.IsNullOrEmpty(name)) return false;
-            if (name.Length < 3 || name.Length > 10) return false;
-
-            Name = name;
-            return true;
-        }
 
         public bool SetUsername (string username)
         {
-            if (string.IsNullOrEmpty(username)) return false;
-            if (username.Length < 3 || username.Length > 20) return false;
+            if (!AccountUsernameIsValid(username)) return false;
 
             Username = username;
             return true;
         }
         public bool SetPassword(string password)
         {
-            if (string.IsNullOrEmpty(password)) return false;
-            if (password.Length < 5 || password.Length > 20) return false;
+           if(!AccountPasswordIsValid(password)) return false;  
 
             Password = password;
             return true;
         }
         private bool SetEmail(string email)
         {
-            if (string.IsNullOrEmpty(email)) return false;
-            if (email.Length < 5 || email.Length > 20) return false;
-            if(!email.Contains("@")) return false;
-            if (!(email.Contains(".it") || email.Contains(".com"))) return false;
+            if(!AccountEmailIsValid(email)) return false;
 
             Email = email;
             return true;
         }
         public bool SetPhone(int number)
         {
-            if ((number+"").Length!=CifrePhoneNumber) return false;
+            if (!AccountPhoneNumberIsValid(number)) return false;
 
             Phone = number;
             return true;
         }
-        public bool SetAddress(string city,string via,int number)
+        public bool SetAddress(Address address)
         {
-            if (string.IsNullOrEmpty(via)) return false;
-            if (via.Length < 2 || via.Length > 20) return false;
-            if(number <= 0)return false;
+            if (!AccountAddressIsValid(address)) return false;
 
-            Address = new(city,via, number);
+            Address = address;
             return true;
         }
     }

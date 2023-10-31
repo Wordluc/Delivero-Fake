@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Ristorante
+namespace Domain.Restaurant
 {
     public partial class Restaurant
     {
 
-        public bool? AddNewDish(string nameDish, float cost, string type)
+        public bool AddNewDish(string nameDish, float cost, string type)
         {
-            if (GetDish(nameDish) is not null) return null;
+            if (GetDish(nameDish) is not null) return false;
 
             var newDish = new Dish();
             if(!(
@@ -34,65 +34,56 @@ namespace Domain.Ristorante
             return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
         }
 
-        public bool AddStepToDishsRecepi(string nameDish,string description, int neededTime, List<Ingredient> ingredients)
+        public bool AddStepToDishsRecepi(string nameDish,StepRecepi step)
         {
             if (GetDish(nameDish) is Dish dish)
             {
-                if (neededTime <= 0) return false;
-                if (string.IsNullOrEmpty(description)) return false;
-
-                foreach (var ingredient in ingredients)
-                {
-                    if (ingredient.Name is null) return false;
-                    if (string.IsNullOrEmpty(ingredient.Name)) return false;
-                }
-
-                var Recepi = new StepRecepi(description, neededTime, ingredients);
+               if(!StepRecepiIsValid(step))return false;
+                var Recepi = step;
                 dish.Recipe.Add(Recepi);
                 return true;
             }
             return false;
         }
-        public void DeleteDishRecepi(Dish dish) {
-            dish.Recipe = new();
+        public void DeleteDishRecepi(string nameDish) {
+            if (GetDish(nameDish) is Dish d)
+                d.Recipe = new();
         }
 
-        public bool SetDishCost(string nameDish,float cost)
+        public bool UpdateDistCost(string nameDish,float cost)
         {
             if (GetDish(nameDish) is Dish d)
                 return SetDishCost(d, cost);
             return false;
         }
-        private bool SetDishCost(Dish dish,float cost)
+        private static bool SetDishCost(Dish dish,float cost)
         {
-            if (cost <= 0) return false;
+            if(!DishCostIsValid(cost)) return false;
 
             dish.Cost = cost;
             return true;
         }
 
-        public bool SetDishName(string oldName, string newName)
+        public bool UpdateDishName(string oldName, string newName)
         {
             if (GetDish(oldName) is Dish d)
                 return SetDishName(d, newName);
             return false;
         }
-        private bool SetDishName(Dish dish,string name)
+        private bool SetDishName(Dish dish,string newName)
         {
-            if (GetDish(name) is not null) return false;
-            if (string.IsNullOrEmpty(name))return false;
-            if (name.Length<3 || name.Length > 20) return false;
+            if (GetDish(newName) is not null) return false;
+            if (!DishNameIsValid(newName)) return false;
 
-            dish.NameDish = name;
+            dish.NameDish = newName;
             return true;
         }
 
-        private bool SetDishType(Dish dish, string type)
+        private static bool SetDishType(Dish dish, string type)
         {
-            if (string.IsNullOrEmpty(type)) return false;
-            if (!Enum.TryParse(type, false, out TypeDish r)) return false;
+            if (!DishTypeIsValid(type)) return false;
 
-            dish.Type=r;
+            dish.Type=type;
             return true;
         }
         

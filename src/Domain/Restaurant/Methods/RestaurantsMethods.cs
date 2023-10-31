@@ -7,39 +7,43 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Domain.Ristorante
+namespace Domain.Restaurant
 {
     public partial class Restaurant
     {
 
-        public static Restaurant? New(string name, string city,string via, int addressNumber)
+        public static Restaurant? New(string name, Address address)
         {
-            if (via is null) return null;
-            if(addressNumber <=0) return null;
-
             var newRestaurant = new Restaurant();
             if (
                 newRestaurant.SetName(name) &&
-                newRestaurant.SetAddress(city,via, addressNumber)) return newRestaurant;
+                newRestaurant.SetAddress(address)
+                ) 
+                return newRestaurant;
 
             return null;
         }
 
         public bool SetName(string name)
         {
-            if (string.IsNullOrEmpty(name)) return false;
-            if (name.Length < 3 || name.Length > 20) return false;
-
-            Name = name;
-            return true;
+            if (NameRestaurantIsValid(name))
+            {
+                Name = name;
+                return true;
+            }
+            return false;
+    
         }
-        public bool SetAddress(string city,string via,int addressNumber)
+        public bool SetAddress(Address address)
         {
-            if (string.IsNullOrEmpty(via)) return false;
-            if(addressNumber <= 0) return false;
-
-            Address = new Address(city,via, addressNumber); 
-            return true;
+            if (AddressRestaurantIsValid(address))
+            {
+                Address = address;
+                return true;
+            }
+            return false;
         }
+
+     
     }
 }

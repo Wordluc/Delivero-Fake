@@ -37,7 +37,7 @@ namespace DomainTests
         {
             var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com");
             account.Should().NotBeNull();
-            account!.SetAddress("mussomeli", "c",-10).Should().BeFalse();
+            account!.SetAddress(new("mussomeli", "c",-10)).Should().BeFalse();
 
         }
         [Fact]
@@ -45,7 +45,7 @@ namespace DomainTests
         {
             var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com");
             account.Should().NotBeNull();
-            account!.SetAddress("mussomeli","via cewiju", 10);
+            account!.SetAddress(new("mussomeli", "via cewiju", 10));
             account.Address.Should().Be(new Address("mussomeli", "via cewiju", 10));
         }
     }
