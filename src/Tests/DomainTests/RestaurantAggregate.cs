@@ -6,7 +6,7 @@ using Xunit;
 
 namespace DomainTests
 {
-    public class RestaurantRoot
+    public class RestaurantAggregate
     {
         [Fact]
         public void CreateRestaurant_WithIncorrectName()
