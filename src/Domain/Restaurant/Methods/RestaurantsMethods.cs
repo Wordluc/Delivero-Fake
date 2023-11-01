@@ -13,34 +13,34 @@ namespace Domain.Restaurant
     {
 
         public static Restaurant? New(string name, Address address)
-        {
-            var newRestaurant = new Restaurant();
-            if (
-                newRestaurant.SetName(name) &&
-                newRestaurant.SetAddress(address)
+        {      
+            if (!(
+                NameRestaurantIsValid(name)&&
+                AddressRestaurantIsValid(address))
                 ) 
-                return newRestaurant;
+                return null;
 
-            return null;
+            var newRestaurant = new Restaurant()
+            {
+                Name = name,
+                Address = address
+            };
+            return newRestaurant;
         }
 
         public bool SetName(string name)
         {
-            if (NameRestaurantIsValid(name))
-            {
-                Name = name;
-                return true;
-            }
-            return false;
+            if (!NameRestaurantIsValid(name)) return false;
+
+            Name = name;
+            return true;
     
         }
         public bool SetAddress(Address address)
         {
-            if (AddressRestaurantIsValid(address))
-            {
-                Address = address;
-                return true;
-            }
+            if (!AddressRestaurantIsValid(address)) return false;
+            
+            Address = address;
             return false;
         }
 

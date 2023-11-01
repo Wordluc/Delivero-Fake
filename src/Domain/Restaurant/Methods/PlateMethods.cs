@@ -13,21 +13,27 @@ namespace Domain.Restaurant
         public bool AddNewDish(string nameDish, float cost, string type)
         {
             if (GetDish(nameDish) is not null) return false;
-
-            var newDish = new Dish();
             if(!(
-                SetDishName(newDish, nameDish) &&
-                SetDishCost(newDish, cost) &&
-                SetDishType (newDish, type))
+                 DishNameIsValid(nameDish) &&
+                 DishCostIsValid(cost)&&
+                 DishTypeIsValid(type))
                )return false;
 
+            var newDish = new Dish()
+            {
+                NameDish = nameDish,
+                Cost = cost,
+                Type = type
+            };
             Menu.Add(newDish);
             return true;
 
         }
-        public bool DeleteDish(Dish dish)
+        public bool DeleteDish(string nameDish)
         {
-            return Menu.Remove(dish);
+            if(GetDish(nameDish) is Dish d)
+                return Menu.Remove(d);
+            return false;
         }
         public Dish? GetDish(string nomeDish)
         {
@@ -36,9 +42,10 @@ namespace Domain.Restaurant
 
         public bool AddStepToDishsRecepi(string nameDish,StepRecepi step)
         {
+            if (!StepRecepiIsValid(step)) return false;
+
             if (GetDish(nameDish) is Dish dish)
             {
-               if(!StepRecepiIsValid(step))return false;
                 var Recepi = step;
                 dish.Recipe.Add(Recepi);
                 return true;
@@ -52,39 +59,27 @@ namespace Domain.Restaurant
 
         public bool UpdateDistCost(string nameDish,float cost)
         {
-            if (GetDish(nameDish) is Dish d)
-                return SetDishCost(d, cost);
-            return false;
-        }
-        private static bool SetDishCost(Dish dish,float cost)
-        {
-            if(!DishCostIsValid(cost)) return false;
+            if (!DishCostIsValid(cost)) return false;
 
-            dish.Cost = cost;
-            return true;
+            if (GetDish(nameDish) is Dish d)
+            {
+                d.Cost = cost;
+                return true;
+            }
+            return false;
         }
 
         public bool UpdateDishName(string oldName, string newName)
         {
+            if(!DishNameIsValid(newName))return false;
+            if(GetDish(newName) is not null) return false;
+
             if (GetDish(oldName) is Dish d)
-                return SetDishName(d, newName);
+            {
+                d.NameDish = newName;
+                return true;
+            }
             return false;
-        }
-        private bool SetDishName(Dish dish,string newName)
-        {
-            if (GetDish(newName) is not null) return false;
-            if (!DishNameIsValid(newName)) return false;
-
-            dish.NameDish = newName;
-            return true;
-        }
-
-        private static bool SetDishType(Dish dish, string type)
-        {
-            if (!DishTypeIsValid(type)) return false;
-
-            dish.Type=type;
-            return true;
         }
         
     }

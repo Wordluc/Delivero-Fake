@@ -21,21 +21,21 @@ namespace Domain.Account
         public static bool AccountUsernameIsValid(string username)
         {
             if (string.IsNullOrEmpty(username)) return false;
-            if (username.Length < 3 || username.Length > 20) return false;
+            if (username.Length is < 3 or > 20) return false;
 
             return true;
         }
         public static bool AccountPasswordIsValid(string password)
         {
             if (string.IsNullOrEmpty(password)) return false;
-            if (password.Length < 5 || password.Length > 20) return false;
+            if (password.Length is < 5 or > 20) return false;
 
             return true;
         }
         public static bool AccountEmailIsValid(string email)
         {
             if (string.IsNullOrEmpty(email)) return false;
-            if (email.Length < 5 || email.Length > 20) return false;
+            if (email.Length is < 5 or > 20) return false;
             if (!email.Contains("@")) return false;
             if (!(email.Contains(".it") || email.Contains(".com"))) return false;
             

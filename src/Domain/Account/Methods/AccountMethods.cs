@@ -14,47 +14,53 @@ namespace Domain.Account
 
         public static Account? New(string username,string password,int numberPhone,string email)
         {
-            var newAccount=new Account();
-
             if (!(
-                    newAccount.SetEmail(email) &&
-                    newAccount.SetPassword(password) &&
-                    newAccount.SetPhone(numberPhone) &&
-                    newAccount.SetUsername(username))
+                  AccountUsernameIsValid(username) &&
+                  AccountPasswordIsValid(password) &&   
+                  AccountPhoneNumberIsValid(numberPhone)&&
+                  AccountEmailIsValid(email))
                 )return null;
+
+            var newAccount = new Account()
+            {
+                Username = username,
+                Password = password,
+                Phone = numberPhone,
+                Email = email
+            };
 
             return newAccount;
         }
 
-        public bool SetUsername (string username)
+        public bool UpdateUsername (string username)
         {
             if (!AccountUsernameIsValid(username)) return false;
 
             Username = username;
             return true;
         }
-        public bool SetPassword(string password)
+        public bool UpdatePassword(string password)
         {
            if(!AccountPasswordIsValid(password)) return false;  
 
             Password = password;
             return true;
         }
-        private bool SetEmail(string email)
+        private bool UpdateEmail(string email)
         {
             if(!AccountEmailIsValid(email)) return false;
 
             Email = email;
             return true;
         }
-        public bool SetPhone(int number)
+        public bool UpdatePhone(int number)
         {
             if (!AccountPhoneNumberIsValid(number)) return false;
 
             Phone = number;
             return true;
         }
-        public bool SetAddress(Address address)
+        public bool UpdateAddress(Address address)
         {
             if (!AccountAddressIsValid(address)) return false;
 
