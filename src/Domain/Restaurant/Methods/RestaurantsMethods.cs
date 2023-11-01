@@ -16,12 +16,13 @@ namespace Domain.Restaurant
         {      
             if (!(
                 NameRestaurantIsValid(name)&&
-                AddressRestaurantIsValid(address))
+                address.IsValid())
                 ) 
                 return null;
 
             var newRestaurant = new Restaurant()
             {
+                 Id=Guid.NewGuid(),
                 Name = name,
                 Address = address
             };
@@ -38,7 +39,7 @@ namespace Domain.Restaurant
         }
         public bool SetAddress(Address address)
         {
-            if (!AddressRestaurantIsValid(address)) return false;
+            if (!address.IsValid()) return false;
             
             Address = address;
             return false;

@@ -18,14 +18,7 @@ namespace Domain.Restaurant
 
             return true;
         }
-        public static bool AddressRestaurantIsValid(Address address)
-        {
-            if (string.IsNullOrEmpty(address.Via)) return false;
-            if (address.AddressNumber <= 0) return false;
-            if (string.IsNullOrEmpty(address.City)) return false;
-
-            return true;
-        }
+     
         public static bool DishCostIsValid(float cost)
         {
             if (cost <= 0) return false;

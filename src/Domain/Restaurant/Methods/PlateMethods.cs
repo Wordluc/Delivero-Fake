@@ -21,6 +21,7 @@ namespace Domain.Restaurant
 
             var newDish = new Dish()
             {
+                Id = Guid.NewGuid(),
                 NameDish = nameDish,
                 Cost = cost,
                 Type = type
