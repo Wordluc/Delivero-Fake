@@ -105,3 +105,5 @@ C:\Users\frang\Desktop\Training\Delivero Fake\src\Tests\DomainTests\obj\Debug\ne
 C:\Users\frang\Desktop\Training\Delivero Fake\src\Tests\DomainTests\obj\Debug\net7.0\DomainTests.pdb
 C:\Users\frang\Desktop\Training\Delivero Fake\src\Tests\DomainTests\obj\Debug\net7.0\DomainTests.genruntimeconfig.cache
 C:\Users\frang\Desktop\Training\Delivero Fake\src\Tests\DomainTests\obj\Debug\net7.0\ref\DomainTests.dll
+C:\Users\frang\Desktop\Training\Delivero Fake\src\Tests\DomainTests\bin\Debug\net7.0\FluentResults.dll
+C:\Users\frang\Desktop\Training\Delivero Fake\src\Tests\DomainTests\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll

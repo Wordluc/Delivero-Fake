@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Ristorante
+namespace Domain.Restaurant
 {
 #pragma warning disable CS8618
     public partial class Restaurant
