@@ -9,7 +9,7 @@ namespace DomainTests
 {
     public class CartAggregate
     {
-        [Fact]
+     
 
     }
 }

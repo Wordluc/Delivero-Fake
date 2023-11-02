@@ -14,38 +14,42 @@ namespace DomainTests
     {
         [Fact]
         public void CreateAccount_WithIncorrectUsername_GetNull () {
-            var account = Account.New("" , "ddddde", 123456789,"viaio@gmail.com");
-            account.Should().BeNull();
+            var account = Account.New("" , "ddddde", 123456789,"viaio@gmail.com").IsFailed;
+            
+            account.Should().BeTrue();
         
         }
         [Fact]
         public void CreateAccount_WithIncorrectEmail_GetNull()
         {
-            var account = Account.New("", "ddddde", 123456789, "viuai");
-            account.Should().BeNull();
+            var account = Account.New("", "ddddde", 123456789, "viuai").IsFailed;
+            
+            account.Should().BeTrue();
 
         }
         [Fact]
         public void CreateAccount_WithCorrectValue_GetAccount()
         {
-            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com");
-            account.Should().NotBeNull();
+            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").IsSuccess;
+           
+            account.Should().BeTrue();
 
         }
         [Fact]
         public void SetAddress_WithWrongValue_GetFalse()
         {
-            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com");
-            account.Should().NotBeNull();
-            account!.UpdateAddress(new("mussomeli", "c",-10)).Should().BeFalse();
+            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").Value;
+
+            account.UpdateAddress(new("mussomeli", "c",-10)).Should().BeFalse();
 
         }
         [Fact]
         public void SetAddress_WithCorrectValue()
         {
-            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com");
-            account.Should().NotBeNull();
-            account!.UpdateAddress(new("mussomeli", "via cewiju", 10));
+            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").Value;
+
+            account.UpdateAddress(new("mussomeli", "via cewiju", 10));
+
             account.Address.Should().Be(new Address("mussomeli", "via cewiju", 10));
         }
     }

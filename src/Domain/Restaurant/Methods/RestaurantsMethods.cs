@@ -1,5 +1,6 @@
 ﻿
 using Domain.Common;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace Domain.Restaurant
     public partial class Restaurant
     {
 
-        public static Restaurant? New(string name, Address address)
-        {      
+        public static Result<Restaurant> New(string name, Address address)
+        {
             if (!(
-                NameRestaurantIsValid(name)&&
+                NameRestaurantIsValid(name) &&
                 address.IsValid())
-                ) 
-                return null;
+                )
+                return Result.Fail("parametri di creazione restaurant non validi") ;
 
             var newRestaurant = new Restaurant()
             {
@@ -26,10 +27,10 @@ namespace Domain.Restaurant
                 Name = name,
                 Address = address
             };
-            return newRestaurant;
+            return Result.Ok(newRestaurant);
         }
 
-        public bool SetName(string name)
+        public bool UpdateName(string name)
         {
             if (!NameRestaurantIsValid(name)) return false;
 
@@ -37,7 +38,7 @@ namespace Domain.Restaurant
             return true;
     
         }
-        public bool SetAddress(Address address)
+        public bool UpdateAddress(Address address)
         {
             if (!address.IsValid()) return false;
             

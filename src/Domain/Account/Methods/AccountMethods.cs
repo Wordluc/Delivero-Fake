@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,14 @@ namespace Domain.Account
     {
         private const int CifrePhoneNumber = 9;
 
-        public static Account? New(string username,string password,int numberPhone,string email)
+        public static Result<Account> New(string username,string password,int numberPhone,string email)
         {
             if (!(
                   AccountUsernameIsValid(username) &&
                   AccountPasswordIsValid(password) &&   
                   AccountPhoneNumberIsValid(numberPhone)&&
                   AccountEmailIsValid(email))
-                )return null;
+                )return Result.Fail("Parametri non validi");
 
             var newAccount = new Account()
             {
@@ -29,7 +30,7 @@ namespace Domain.Account
                 Email = email
             };
 
-            return newAccount;
+            return Result.Ok(newAccount);
         }
 
         public bool UpdateUsername (string username)

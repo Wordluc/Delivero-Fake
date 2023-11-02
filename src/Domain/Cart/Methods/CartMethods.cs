@@ -10,12 +10,13 @@ namespace Domain.Cart
 {
     public partial class Cart
     {
-        public static Cart New(Guid restaurantId) {
-            return new Cart()
+        public static Result<Cart> New(Guid restaurantId) {
+            return Result.Ok(new Cart()
             {
-                Id=Guid.NewGuid(),
-                RestaurantId = restaurantId
-            };
+                Id = Guid.NewGuid(),
+                RestaurantId = restaurantId,
+                BookedDishs=new()
+            });
         }
         public bool BookDish(string nameDish,int quantity=1)
         {
