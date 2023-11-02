@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Common;
 using Domain.Restaurant;
 using FluentAssertions;
 using FluentResults;
@@ -12,41 +13,50 @@ namespace DomainTests
         [Fact]
         public void CreateRestaurant_WithIncorrectName()
         {
-            Result<Restaurant> restaurantResult = Restaurant.New("",new("mussomeli","Via bla bla",55));
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+            Result<Restaurant> restaurantResult = Restaurant.New("",address.Value);
 
             restaurantResult.IsFailed.Should().BeTrue();
         }
         [Fact]
-        public void ChangeAddress_WithOneIncorrect()
+        public void CreateAddress_Incorrect()
         {
-            Restaurant restaurant = Restaurant.New("trattotrai", new("mussomeli", "Via bla bla", 55)).Value;
-            restaurant.UpdateAddress(new("mussomeli", "", -200)).Should().Be(false);
+            var address = Address.New("mussomeli", "", 55);
+            address.IsFailed.Should().BeTrue();
         }
         [Fact]
         public void CreateDish_WithIncorrectName_ShouldReturnFalse()
         {
-            Restaurant restaurant = Restaurant.New("trattotrai", new("mussomeli", "Via bla bla", 55)).Value;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
             restaurant.AddNewDish("", 10, "First").Should().BeFalse();
 
         }
         [Fact]
         public void CreateDish_WithIncorrectCost_ShouldReturnFalse()
         {
-            Restaurant restaurant = Restaurant.New("trattotrai", new("mussomeli", "Via bla bla", 55)).Value ;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value ;
             restaurant.AddNewDish("cous cous", -10, "First").Should().BeFalse();
 
         }
         [Fact]
         public void CreateDish_WithCorrectValue()
         {
-            Restaurant restaurant = Restaurant.New("trattotrai", new("mussomeli", "Via bla bla", 55)).Value;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
             restaurant.AddNewDish("cous cous", 10, "First").Should().BeTrue();
 
         }
         [Fact]
         public void CreateDish_WithExistingUsedname_GetFalse()
         {
-            Restaurant restaurant = Restaurant.New("trattotrai", new("mussomeli", "Via bla bla", 55)).Value;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
             restaurant.AddNewDish("cous cous", 10, "First");
             restaurant.AddNewDish("cous cous", 10, "First").Should().Be(false);
 
@@ -55,7 +65,9 @@ namespace DomainTests
         [Fact]
         public void CreatePlate_WithIncorrectIngredientsName_GetFalse()
         {
-            Restaurant restaurant = Restaurant.New("trattoria da luca", new("mussomeli", "Via bla bla", 55)).Value;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
             restaurant.AddNewDish("cous cous",10,"First");
 
             var ingredients = new List<Ingredient>()
@@ -70,7 +82,9 @@ namespace DomainTests
         [Fact]
         public void CreateRecepi_WithIncorrectDescriptionStep_GetFalse()
         {
-            Restaurant restaurant = Restaurant.New("trattoria da luca", new("mussomeli", "Via bla bla", 55)).Value;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
             restaurant.AddNewDish("cous cous", 10, "First");
 
             var ingredients = new List<Ingredient>()
@@ -86,7 +100,9 @@ namespace DomainTests
         [Fact]
         public void ChangeCost_WithIncorrectCorrectCost_KeepSameOldCost()
         {
-            Restaurant restaurant = Restaurant.New("trattoria da luca", new("mussomeli", "Via bla bla", 55)).Value;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
             restaurant.AddNewDish("cous cous", 10, "First");
 
             restaurant.UpdateDistCost("cous cous",-20);
@@ -96,7 +112,9 @@ namespace DomainTests
         [Fact]
         public void ChangeCost_WithCorrectCost()
         {
-            Restaurant restaurant = Restaurant.New("trattoria da luca", new("mussomeli", "Via bla bla", 55)).Value;
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+
+            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
             restaurant.AddNewDish("cous cous", 10, "First");
 
             restaurant.UpdateDistCost("cous cous", 20);

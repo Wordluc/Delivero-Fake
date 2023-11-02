@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Domain.Cart
 {
     public partial class Cart
     {
         public static Result<Cart> New(Guid restaurantId) {
+            
             return Result.Ok(new Cart()
             {
                 Id = Guid.NewGuid(),
@@ -31,10 +33,8 @@ namespace Domain.Cart
                 return BookedDishs.Remove(d); 
             return true;
         }
-        public bool CreateOrder(Guid accountId,Address address)
+        public void CreateOrder(Guid accountId,Address address)
         {
-            if (!address.IsValid()) return false;
-            
             var order = new Order()
             {
                 Id = Guid.NewGuid(),
@@ -43,7 +43,6 @@ namespace Domain.Cart
                 Date = new()
             };
             Order=order;
-            return true;
         }
 
 

@@ -31,16 +31,8 @@ namespace DomainTests
         public void CreateAccount_WithCorrectValue_GetAccount()
         {
             var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").IsSuccess;
-           
+
             account.Should().BeTrue();
-
-        }
-        [Fact]
-        public void SetAddress_WithWrongValue_GetFalse()
-        {
-            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").Value;
-
-            account.UpdateAddress(new("mussomeli", "c",-10)).Should().BeFalse();
 
         }
         [Fact]
@@ -48,9 +40,10 @@ namespace DomainTests
         {
             var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").Value;
 
-            account.UpdateAddress(new("mussomeli", "via cewiju", 10));
+            var address = Address.New("mussomeli", "Via bla bla", 55);
+            account.UpdateAddress(address.Value);
 
-            account.Address.Should().Be(new Address("mussomeli", "via cewiju", 10));
+            account.Address.Should().Be(address.Value);
         }
     }
 }

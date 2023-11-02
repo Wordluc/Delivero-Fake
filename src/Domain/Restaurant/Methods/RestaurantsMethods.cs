@@ -16,9 +16,8 @@ namespace Domain.Restaurant
         public static Result<Restaurant> New(string name, Address address)
         {
             if (!(
-                NameRestaurantIsValid(name) &&
-                address.IsValid())
-                )
+                NameRestaurantIsValid(name)
+                ))
                 return Result.Fail("parametri di creazione restaurant non validi") ;
 
             var newRestaurant = new Restaurant()
@@ -39,9 +38,7 @@ namespace Domain.Restaurant
     
         }
         public bool UpdateAddress(Address address)
-        {
-            if (!address.IsValid()) return false;
-            
+        {            
             Address = address;
             return false;
         }
