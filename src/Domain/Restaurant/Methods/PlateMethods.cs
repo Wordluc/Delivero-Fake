@@ -36,10 +36,6 @@ namespace Domain.Restaurant
                 return Menu.Remove(d);
             return false;
         }
-        public Dish? GetDish(string nomeDish)
-        {
-            return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
-        }
 
         public bool AddIngredient(string nameDish,Ingredient ingredient)
         {
@@ -76,6 +72,10 @@ namespace Domain.Restaurant
                 return true;
             }
             return false;
+        }
+        private Dish? GetDish(string nomeDish)
+        {
+            return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
         }
         
     }

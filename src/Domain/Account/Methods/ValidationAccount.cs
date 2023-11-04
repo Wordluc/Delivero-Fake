@@ -61,5 +61,13 @@ namespace Domain.Account
 
             return true;
         }
+        private bool CardIsValid(Card card)
+        {
+            if (string.IsNullOrEmpty(card.Iban)) return false;
+            if (card.Iban.Length >= 27) return false;
+            if (card.OwnerName.Length is < 2 or > 20) return false;
+
+            return true;
+        }
     }
 }

@@ -1,11 +1,23 @@
-﻿namespace Domain.Cart
+﻿using FluentResults;
+
+namespace Domain.Cart
 {
     public partial class Cart
     {
         public Guid Id { get;internal set; }
+        public Guid AccountId { get; internal set; }
         public Guid RestaurantId { get; internal set; }
-        public List<BookedDish> BookedDishs {  get; internal set; } 
-        public Order Order { get; internal set; }
+        public List<SelectedDish> SelectedDishes {  get; internal set; }
+        public static Result<Cart> New(Guid accountId,Guid restaurantId)
+        {
+
+            return Result.Ok(new Cart()
+            {
+                Id = Guid.NewGuid(),
+                AccountId = accountId,
+                RestaurantId=restaurantId,
+                SelectedDishes = new()
+            });
+        }
     }
-    public record BookedDish(string NameDish,int Quantity);
 }
