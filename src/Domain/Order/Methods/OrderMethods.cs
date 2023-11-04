@@ -10,10 +10,11 @@ namespace Domain.Order
 {
     public partial class Order
     {
-         public static Result<Order> New(Guid cartId,Address address) {
+         public static Result<Order> New(Guid accountId, Guid restaurantId, Address address) {
             return new Order()
             {
-                CartId = cartId,
+                AccountId = accountId,
+                RestaurantId = restaurantId,
                 Address = address,
                 BookedDishes = new(),
                 Date = new DateOnly(),

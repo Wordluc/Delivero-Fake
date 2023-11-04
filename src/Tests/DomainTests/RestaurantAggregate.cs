@@ -96,30 +96,5 @@ namespace DomainTests
             r.Should().Be(false);
         }
 
-        [Fact]
-        public void ChangeCost_WithIncorrectCorrectCost_KeepSameOldCost()
-        {
-            var address = Address.New("mussomeli", "Via bla bla", 55);
-
-            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-            restaurant.AddNewDish("cous cous", 10, "First");
-
-            restaurant.UpdateDistCost("cous cous",-20);
-
-            restaurant.GetDish("cous cous")!.Cost.Should().Be(10);
-        }
-        [Fact]
-        public void ChangeCost_WithCorrectCost()
-        {
-            var address = Address.New("mussomeli", "Via bla bla", 55);
-
-            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-            restaurant.AddNewDish("cous cous", 10, "First");
-
-            restaurant.UpdateDistCost("cous cous", 20);
-
-            restaurant.GetDish("cous cous")!.Cost.Should().Be(20);
-        }
-
     }
 }

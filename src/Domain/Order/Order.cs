@@ -11,7 +11,8 @@ namespace Domain.Order
     public partial class Order
     {
         public Guid Id { get; internal set; }
-        public Guid CartId { get; internal set; }
+        public Guid RestaurantId { get; internal set; }
+        public Guid AccountId { get; internal set; }
         public DateOnly Date { get; internal set; }
         public Address Address { get; internal set; }
         public List<BookedDish> BookedDishes { get; internal set; }
