@@ -63,36 +63,35 @@ namespace DomainTests
         }
 
         [Fact]
-        public void CreatePlate_WithIncorrectIngredientsName_GetFalse()
+        public void CreatePlate_WithIncorrectIntollerance_GetFalse()
         {
             var address = Address.New("mussomeli", "Via bla bla", 55);
 
             Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
             restaurant.AddNewDish("cous cous",10,"First");
 
-            var ingredients = new List<Ingredient>()
-            {
-                new("",null),
-                new(null!,new(){new("lattosio","vai in bagno")})
-            };
-            var r = restaurant.AddStepToDishsRecepi("cous cous", new( "mescolare", 10, ingredients));
+            Ingredient ingredient =
+                new("lattosio",
+                    new() { new("latto", "") });
+            
+            var r = restaurant.AddIngredient("cous cous", ingredient);
 
             r.Should().Be(false);
         }
         [Fact]
-        public void CreateRecepi_WithIncorrectDescriptionStep_GetFalse()
+        public void CreateIngridient_WithIncorrectName()
         {
             var address = Address.New("mussomeli", "Via bla bla", 55);
 
             Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
             restaurant.AddNewDish("cous cous", 10, "First");
 
-            var ingredients = new List<Ingredient>()
-            {
-                new("patate",null),
-                new("latte",new(){new("lattosio","vai in bagno")})
-            };
-            var r = restaurant.AddStepToDishsRecepi("cous cous",new( "", 10, ingredients));
+            Ingredient ingredient =
+                new("",
+                           new() { 
+                               new("lattosio", "vai in bagno") 
+                           });
+            var r = restaurant.AddIngredient("cous cous",ingredient);
 
             r.Should().Be(false);
         }
