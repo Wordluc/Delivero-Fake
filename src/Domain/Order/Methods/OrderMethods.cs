@@ -16,7 +16,7 @@ namespace Domain.Order
                 AccountId = accountId,
                 RestaurantId = restaurantId,
                 Address = address,
-                BookedDishes = new(),
+                OrderedDishes = new(),
                 Date = new DateOnly(),
                 Id = Guid.NewGuid()
             };
