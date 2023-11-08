@@ -12,6 +12,8 @@ namespace Domain.Account
         public string Email { get; private set; }
         public int Phone { get; private set; }
         public Address Address { get; private set; }
+        public List<Card> Cards { get; private set; }
         private Account() { }
     }
+    public record Card(string OwnerName,string Iban,DateOnly ExpiredTime);
 }

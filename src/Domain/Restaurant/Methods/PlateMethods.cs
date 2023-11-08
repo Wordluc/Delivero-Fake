@@ -36,26 +36,17 @@ namespace Domain.Restaurant
                 return Menu.Remove(d);
             return false;
         }
-        public Dish? GetDish(string nomeDish)
-        {
-            return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
-        }
 
-        public bool AddStepToDishsRecepi(string nameDish,StepRecepi step)
+        public bool AddIngredient(string nameDish,Ingredient ingredient)
         {
-            if (!StepRecepiIsValid(step)) return false;
+            if (!IngredientIsValid(ingredient)) return false;
 
             if (GetDish(nameDish) is Dish dish)
             {
-                var Recepi = step;
-                dish.Recipe.Add(Recepi);
+                dish.Ingredients.Add(ingredient);
                 return true;
             }
             return false;
-        }
-        public void DeleteDishRecepi(string nameDish) {
-            if (GetDish(nameDish) is Dish d)
-                d.Recipe = new();
         }
 
         public bool UpdateDistCost(string nameDish,float cost)
@@ -81,6 +72,10 @@ namespace Domain.Restaurant
                 return true;
             }
             return false;
+        }
+        private Dish? GetDish(string nomeDish)
+        {
+            return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
         }
         
     }

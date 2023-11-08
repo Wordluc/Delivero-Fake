@@ -36,16 +36,19 @@ namespace Domain.Restaurant
             if (!TypeDish.TryParse(type, false, out TypeDish _)) return false;
             return true;
         }
-        public static bool StepRecepiIsValid(StepRecepi step)
+        public static bool IngredientIsValid(Ingredient ingredient)
         {
-            if (step.NeededTime <= 0) return false;
-            if (string.IsNullOrEmpty(step.Description)) return false;
+            if (ingredient?.Intolerances is null)return false;
+            if (ingredient.Name is null) return false;
+            if (string.IsNullOrEmpty(ingredient.Name)) return false;
 
-            foreach (var ingredient in step.Ingredients!)
-            {
-                if (ingredient.Name is null) return false;
-                if (string.IsNullOrEmpty(ingredient.Name)) return false;
+            foreach (var i in ingredient.Intolerances) {
+                if (i.Name is null) return false;
+                if (i.Name.Length is < 3 or > 20) return false;
+                if (i.Description is null) return false;
+                if (i.Description.Length is < 3 or > 40) return false;
             }
+        
             return true;
 
         }

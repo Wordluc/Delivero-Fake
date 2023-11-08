@@ -27,12 +27,19 @@ namespace Domain.Account
                 Username = username,
                 Password = password,
                 Phone = numberPhone,
-                Email = email
+                Email = email,
+                Cards = new()
             };
 
             return Result.Ok(newAccount);
         }
+        public bool AddCard(Card card)
+        {
+            if(!CardIsValid(card))return false;
 
+            Cards.Add(card);
+            return true;
+        }
         public bool UpdateUsername (string username)
         {
             if (!AccountUsernameIsValid(username)) return false;
@@ -47,7 +54,7 @@ namespace Domain.Account
             Password = password;
             return true;
         }
-        private bool UpdateEmail(string email)
+        public bool UpdateEmail(string email)
         {
             if(!AccountEmailIsValid(email)) return false;
 

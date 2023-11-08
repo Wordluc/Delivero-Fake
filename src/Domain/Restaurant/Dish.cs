@@ -7,10 +7,9 @@
         public string NameDish { get; internal set; }
         public string Type { get; internal set; }
         public float Cost { get; internal set; }
-        public List<StepRecepi> Recipe { get; internal set; }
+        public List<Ingredient> Ingredients { get; internal set; }
         internal Dish() { }
     }
-    public record StepRecepi(string Description, int NeededTime, List<Ingredient>? Ingredients);
     public record Ingredient(string Name, List<Intolerance>? Intolerances);
     public record Intolerance(string Name, string Description);
     public enum TypeDish
