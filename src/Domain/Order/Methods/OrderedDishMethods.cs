@@ -31,7 +31,7 @@ namespace Domain.Order
             OrderedDishes.Add(dish);
             return Result.Ok(dish.Id);
         }
-        public bool AddIngredientToOrderedDish(Guid dishId, OrderedIngredient orderedIngredient)
+        public bool AddExtraIngredientToOrderedDish(Guid dishId, OrderedIngredient orderedIngredient)
         {
             if (!(
                    !string.IsNullOrEmpty(orderedIngredient.Name) &&

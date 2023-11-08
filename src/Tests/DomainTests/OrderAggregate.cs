@@ -18,7 +18,7 @@ namespace DomainTests
             var address = Address.New("pavia", "via bello", 34).Value;
             var order = Order.New(Guid.NewGuid(),Guid.NewGuid(),address).Value;
             var orderedDishid=order.AddOrderedDish("cous cous", 1, 10).Value;
-            order.AddIngredientToOrderedDish(orderedDishid, new("piselli", 2, 2)).Should().BeTrue();
+            order.AddExtraIngredientToOrderedDish(orderedDishid, new("piselli", 2, 2)).Should().BeTrue();
         }
         [Fact]
         public void GetTotalCostOrder()
@@ -26,7 +26,7 @@ namespace DomainTests
             var address = Address.New("pavia", "via bello", 34).Value;
             var order = Order.New(Guid.NewGuid(), Guid.NewGuid(), address).Value;
             var orderedDishid = order.AddOrderedDish("cous cous", 1, 10).Value;
-            order.AddIngredientToOrderedDish(orderedDishid, new("piselli", 2, 2));
+            order.AddExtraIngredientToOrderedDish(orderedDishid, new("piselli", 2, 2));
             order.TotalCost.Should().Be(14);
         }
     }

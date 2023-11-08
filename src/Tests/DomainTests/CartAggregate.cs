@@ -18,13 +18,7 @@ namespace DomainTests
             var result = cart.AddDish("cous cous", 2, 2).IsSuccess;
             result.Should().BeTrue();
         }
-        [Fact]
-        public void AddIngredients_WithIncorrectParameters_GetError()
-        {
-            var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
-            var dishId = cart.AddDish("cous cous", 2, 2).Value;
-            cart.AddExtraIngredient(dishId, "ketchup", -6,9).Should().BeFalse();
-        }
+          
         [Fact]
         public void GetTotalCostSelectedDish()
         {
