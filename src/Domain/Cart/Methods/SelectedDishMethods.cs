@@ -61,12 +61,13 @@ namespace Domain.Cart
         }
         public Result ChangeIngredientNumber(Guid dishId,string nameIngredient,int quantity)
         {
-            if(IngredientQuantityIsValid(quantity) is Result resultQuantity) return resultQuantity;
+            var result = IngredientQuantityIsValid(quantity);
+            if(result.IsFailed)return result;
 
-            var result = GetSelectedDish(dishId);
-            if (result.IsFailed) return result.ToResult();
+            result = GetSelectedDish(dishId).ToResult();
+            if (result.IsFailed) return result;
 
-            var dish = result.Value;
+            var dish = result.ToResult<SelectedDish>().Value;
             if (dish.ExtraIngredients.FirstOrDefault(x => x.NameIngredient == nameIngredient) is ExtraIngredient ingredient)
             {
                 if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
