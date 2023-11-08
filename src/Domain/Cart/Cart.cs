@@ -12,24 +12,5 @@ namespace Domain.Cart
         public List<SelectedDish> SelectedDishes {  get; internal set; }
         public float TotalCost { get { return CalculateTotalCostOrder(); } }
         private Cart() { }
-        public static Result<Cart> New(Guid accountId,Guid restaurantId)
-        {
-            return Result.Ok(new Cart()
-            {
-                Id = Guid.NewGuid(),
-                AccountId = accountId,
-                RestaurantId=restaurantId,
-                SelectedDishes = new()
-            });
-        }
-        private float CalculateTotalCostOrder()
-        {
-            float totalCost = 0;
-            foreach (var item in SelectedDishes)
-            {
-                totalCost += item.TotalCost;
-            }
-            return totalCost;
-        }
     }
 }
