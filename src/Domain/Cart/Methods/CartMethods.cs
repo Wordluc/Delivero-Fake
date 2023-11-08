@@ -19,7 +19,7 @@ namespace Domain.Cart
                 SelectedDishes = new()
             });
         }
-        private float CalculateTotalCostOrder()
+        private float CalculateTotalCostCart()
         {
             float totalCost = 0;
             foreach (var item in SelectedDishes)

@@ -18,7 +18,7 @@ namespace Domain.Order
         public Address Address { get; internal set; }
         public List<OrderedDish> OrderedDishes { get; internal set; }
         public StatusOrder StatusOrder { get; internal set; } = StatusOrder.Awaiting;
-        public float TotalCost { get { return CalculateTotalCost(); } }
+        public float TotalCost { get { return CalculateTotalCostOrder(); } }
         internal Order() { }
 
     }

@@ -10,7 +10,7 @@ namespace Domain.Cart
         public Guid AccountId { get; internal set; }
         public Guid RestaurantId { get; internal set; }
         public List<SelectedDish> SelectedDishes {  get; internal set; }
-        public float TotalCost { get { return CalculateTotalCostOrder(); } }
+        public float TotalCost { get { return CalculateTotalCostCart(); } }
         private Cart() { }
     }
 }

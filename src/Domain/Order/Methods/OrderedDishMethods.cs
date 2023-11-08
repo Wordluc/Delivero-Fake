@@ -42,7 +42,7 @@ namespace Domain.Order
             if (GetOrderedDish(dishId) is OrderedDish dish)
             {
                 dish.Ingredients.Add(orderedIngredient);
-                dish.TotalCost = CalculateTotalCost(dish);
+                dish.TotalCost = CalculateTotalCostDish(dish);
                 return true;
             }
             return false;
@@ -64,7 +64,7 @@ namespace Domain.Order
             return null;
             
         }
-        private static float CalculateTotalCost(OrderedDish dish)
+        private static float CalculateTotalCostDish(OrderedDish dish)
         {
             float totalCost = dish.BaseCost;
             foreach (var i in dish.Ingredients)
