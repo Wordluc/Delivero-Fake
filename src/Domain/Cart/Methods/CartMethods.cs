@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Cart
 {
-    public class Cart
+    public partial class Cart
     {
         public static Result<Cart> New(Guid accountId, Guid restaurantId)
         {

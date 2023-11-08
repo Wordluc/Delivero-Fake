@@ -20,7 +20,7 @@ namespace Domain.Account
                   AccountPasswordIsValid(password) &&   
                   AccountPhoneNumberIsValid(numberPhone)&&
                   AccountEmailIsValid(email))
-                )return Result.Fail("Parametri non validi");
+                )return Result.Fail("Parametri non validi per la creazione dell'account");
 
             var newAccount = new Account()
             {
