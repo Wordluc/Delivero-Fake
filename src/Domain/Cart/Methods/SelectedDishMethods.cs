@@ -10,10 +10,11 @@ namespace Domain.Cart
 {
     public partial class Cart
     {
-        public Result<Guid> SelectDish(string nameDish,int quantity,float baseCost)
+        public Result<Guid> AddDish(string nameDish,int quantity,float baseCost)
         {
 
-            if (!(string.IsNullOrEmpty(nameDish) &&
+            if (!(
+                  !string.IsNullOrEmpty(nameDish) &&
                   QuantitySelectedDishIsValid(quantity))                 
                   ) return Result.Fail("Parametri ordine non corretti");
             var dish = new SelectedDish()
@@ -23,11 +24,12 @@ namespace Domain.Cart
                 NameDish = nameDish,
                 Id = Guid.NewGuid(),
                 BaseCost = baseCost,
+                TotalCost = baseCost,
             };
             SelectedDishes.Add(dish);
             return Result.Ok(dish.Id);
         }
-        public bool AddDishIngredient(Guid dishId,string nameIngredient,int quantity,float unitCost)
+        public bool AddExtraIngredient(Guid dishId,string nameIngredient,int quantity,float unitCost)
         {
             if (!(IngredientQuantityIsValid(quantity) &&
                   IngredientNameIsValid(nameIngredient)&&
@@ -43,6 +45,7 @@ namespace Domain.Cart
             if (GetSelectedDish(dishId) is SelectedDish dish)
             {
                 dish.ExtraIngredients.Add(newIngredient);
+                dish.TotalCost=GetTotalCostSelectedDish(dish);
                 return true;
             }
             return false;
@@ -63,29 +66,22 @@ namespace Domain.Cart
                 {
                     if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
                     ingredient.Quantity = quantity;
+                    dish.TotalCost = GetTotalCostSelectedDish(dish);
                     return true;
                 }
                     
             return false;
         }
-        private SelectedDish? GetSelectedDish(Guid dishId)
+        public SelectedDish? GetSelectedDish(Guid dishId)
         {
-            var dish=SelectedDishes!.FirstOrDefault(x => x.Id == dishId);
-            if(dish is null) return null;
-
-            dish.TotalCost = CalculateTotalCost(dishId);
-            return dish;
+            return SelectedDishes!.FirstOrDefault(x => x.Id == dishId);
         }
-        private float CalculateTotalCost(Guid dishId)
+        private float GetTotalCostSelectedDish(SelectedDish dish)
         {
-            if (GetSelectedDish(dishId) is SelectedDish dish)
-            {
                 float totalCost = dish.BaseCost;
                 foreach (var i in dish.ExtraIngredients)
-                    totalCost = +i.Quantity * i.UnitCost;
+                    totalCost +=i.Quantity * i.UnitCost;
                 return totalCost;
-            }
-            return 0;
         }
     }
 }

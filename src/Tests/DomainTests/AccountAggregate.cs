@@ -45,5 +45,19 @@ namespace DomainTests
 
             account.Address.Should().Be(address.Value);
         }
+        [Fact]
+        public void AddCard_WithCorrectIban()
+        {
+            var account = Account.New("wordluc", "ddDA21d$^e", 123456789, "viuai@gmail.com").Value;
+
+            account.AddCard(new Card("luca", "IT22123", new DateOnly())).Should().BeTrue();
+        }
+        [Fact]
+        public void AddCard_WithInCorrectIban()
+        {
+            var account = Account.New("wordluc", "ddDA21d$^e", 123456789, "viuai@gmail.com").Value;
+
+            account.AddCard(new Card("luca", "", new DateOnly())).Should().BeFalse();
+        }
     }
 }

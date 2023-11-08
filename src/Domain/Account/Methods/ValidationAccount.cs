@@ -19,6 +19,10 @@ namespace Domain.Account
 
         private static string RegexPassword = @"^(?=.*[A-Z]{2})(?=.*[$\^\.]{2})(?=.*[0-9]{2}).{8,20}$";
         private static Regex RegexRunnerPassword = new Regex(RegexPassword);
+
+        //  private static string RegexIban = @"^\b[A-Z]{2}[0-9]{2}(?:[ ]?[0-9]{4}){4}(?!(?:[ ]?[0-9]){3})(?:[ ]?[0-9]{1,2})?\b$";
+        private static string RegexIban = @"^[A-Z]{2}[0-9]{5}$";
+        private static Regex RegexRunnerIban = new Regex(RegexIban);
         public static bool AccountNameIsValid(string name)
         {
             if (string.IsNullOrEmpty(name)) return false;
@@ -62,11 +66,10 @@ namespace Domain.Account
         }
         private bool CardIsValid(Card card)
         {
-            if (string.IsNullOrEmpty(card.Iban)) return false;
-            if (card.Iban.Length >= 27) return false;
+            
             if (card.OwnerName.Length is < 2 or > 20) return false;
-
-            return true;
+            return RegexRunnerIban.Match(card.Iban).Success;
+            
         }
     }
 }

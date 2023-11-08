@@ -21,5 +21,13 @@ namespace Domain.Order
                 Id = Guid.NewGuid()
             };
         }
+        private float CalculateTotalCost()
+        {
+            float totalCost = 0;
+            foreach (var item in OrderedDishes) {
+               totalCost += item.TotalCost;
+            }
+            return totalCost;
+        }
     }
 }

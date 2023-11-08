@@ -14,7 +14,7 @@ namespace Domain.Order
     {
         public Result<Guid> AddOrderedDish(string nameDish,int quantity,float unitCost)
         {
-            if (string.IsNullOrEmpty(nameDish) &&
+            if (!string.IsNullOrEmpty(nameDish) &&
                 (quantity <= 0) &&
                 (unitCost < 0)) return Result.Fail("Parametri non corretti per la creazione");
 
@@ -24,7 +24,7 @@ namespace Domain.Order
                 Ingredients = new(),
                 Quantity = quantity,
                 NameDish = nameDish,
-                UnitCost = unitCost,
+                BaseCost = unitCost,
                 TotalCost=unitCost*quantity
             };
 
@@ -33,16 +33,16 @@ namespace Domain.Order
         }
         public bool AddIngredientToOrderedDish(Guid dishId, OrderedIngredient orderedIngredient)
         {
-            if (string.IsNullOrEmpty(orderedIngredient.Name)) return false;
-            if (orderedIngredient.Quantity <= 0) return false;
-            if(orderedIngredient.UnitCost < 0) return false;
+            if (!(
+                   !string.IsNullOrEmpty(orderedIngredient.Name) &&
+                   orderedIngredient.Quantity > 0 &&
+                   orderedIngredient.UnitCost > 0)) return false;
+
 
             if (GetOrderedDish(dishId) is OrderedDish dish)
             {
-                OrderedIngredient ingredient = orderedIngredient with
-                { TotalCost = orderedIngredient.UnitCost * orderedIngredient.Quantity };
-
-                dish.Ingredients.Add(ingredient);
+                dish.Ingredients.Add(orderedIngredient);
+                dish.TotalCost = CalculateTotalCost(dish);
                 return true;
             }
             return false;
@@ -55,9 +55,21 @@ namespace Domain.Order
             StatusOrder = status;
             return true;
         }
-        private OrderedDish? GetOrderedDish(Guid dishId)
+        public OrderedDish? GetOrderedDish(Guid dishId)
         {
-            return OrderedDishes.FirstOrDefault(x=>x.Id == dishId);
+            if(OrderedDishes.FirstOrDefault(x=>x.Id == dishId) is OrderedDish dish)
+            {
+                return dish;
+            }
+            return null;
+            
+        }
+        private static float CalculateTotalCost(OrderedDish dish)
+        {
+            float totalCost = dish.BaseCost;
+            foreach (var i in dish.Ingredients)
+                totalCost += i.Quantity * i.UnitCost;
+            return totalCost;
         }
     }
 }
