@@ -1,23 +1,25 @@
 ﻿
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Domain.Restaurant
 {
     public partial class Restaurant
     {
 
-        public bool AddNewDish(string nameDish, float cost, string type)
+        public Result<Guid> AddNewDish(string nameDish, float cost, string type)
         {
-            if (GetDish(nameDish) is not null) return false;
             if(!(
+                 (IsDishNameExist(nameDish)==false)&&
                  DishNameIsValid(nameDish) &&
                  DishCostIsValid(cost)&&
                  DishTypeIsValid(type))
-               )return false;
+               )return Result.Fail("Impossibile creare un piatto ");
 
             var newDish = new Dish()
             {
@@ -27,21 +29,21 @@ namespace Domain.Restaurant
                 Type = type
             };
             Menu.Add(newDish);
-            return true;
+            return Result.Ok(newDish.Id);
 
         }
-        public bool DeleteDish(string nameDish)
+        public bool DeleteDish(Guid dishId)
         {
-            if(GetDish(nameDish) is Dish d)
+            if(GetDish(dishId) is Dish d)
                 return Menu.Remove(d);
             return false;
         }
 
-        public bool AddIngredient(string nameDish,Ingredient ingredient)
+        public bool AddIngredient(Guid dishId, Ingredient ingredient)
         {
             if (!IngredientIsValid(ingredient)) return false;
 
-            if (GetDish(nameDish) is Dish dish)
+            if (GetDish(dishId) is Dish dish)
             {
                 dish.Ingredients.Add(ingredient);
                 return true;
@@ -49,11 +51,11 @@ namespace Domain.Restaurant
             return false;
         }
 
-        public bool UpdateDistCost(string nameDish,float cost)
+        public bool UpdateDistCost(Guid dishId,float cost)
         {
             if (!DishCostIsValid(cost)) return false;
 
-            if (GetDish(nameDish) is Dish d)
+            if (GetDish(dishId) is Dish d)
             {
                 d.Cost = cost;
                 return true;
@@ -61,22 +63,25 @@ namespace Domain.Restaurant
             return false;
         }
 
-        public bool UpdateDishName(string oldName, string newName)
+        public bool UpdateDishName(Guid dishId, string newName)
         {
-            if(!DishNameIsValid(newName))return false;
-            if(GetDish(newName) is not null) return false;
+            if(IsDishNameExist(newName)==false) return false;
 
-            if (GetDish(oldName) is Dish d)
+            if (GetDish(dishId) is Dish d)
             {
                 d.NameDish = newName;
                 return true;
             }
             return false;
         }
-        private Dish? GetDish(string nomeDish)
+        public Dish? GetDish(Guid dishId)
         {
-            return Menu.FirstOrDefault(x => x.NameDish == nomeDish);
+            return Menu.FirstOrDefault(x => x.Id == dishId);
         }
-        
+        public bool IsDishNameExist(string nameDish)
+        {
+            return Menu.FirstOrDefault(x => x.NameDish == nameDish) is not null;
+        }
+
     }
 }
