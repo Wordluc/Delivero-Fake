@@ -64,10 +64,10 @@ namespace Domain.Cart
             var result = IngredientQuantityIsValid(quantity);
             if(result.IsFailed)return result;
 
-            result = GetSelectedDish(dishId).ToResult();
-            if (result.IsFailed) return result;
+            var resultDish = GetSelectedDish(dishId);
+            if (resultDish.IsFailed) return result;
 
-            var dish = result.ToResult<SelectedDish>().Value;
+            var dish = resultDish.Value;
             if (dish.ExtraIngredients.FirstOrDefault(x => x.NameIngredient == nameIngredient) is ExtraIngredient ingredient)
             {
                 if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
@@ -81,7 +81,7 @@ namespace Domain.Cart
         }
         public Result<SelectedDish> GetSelectedDish(Guid dishId)
         {
-            if (SelectedDishes!.FirstOrDefault(x => x.Id == dishId) is SelectedDish dish) Result.Ok(dish);
+            if (SelectedDishes!.FirstOrDefault(x => x.Id == dishId) is SelectedDish dish) return Result.Ok(dish);
             return Result.Fail("Dish non esistente");
         }
         private float GetTotalCostSelectedDish(SelectedDish dish)
