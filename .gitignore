@@ -1,0 +1,26 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/Core/obj/Core.csproj.nuget.dgspec.json
+/src/Core/obj/Core.csproj.nuget.g.props
+/src/Core/obj/Debug/net7.0/Core.assets.cache
+/src/Core/obj/Debug/net7.0/Core.csproj.AssemblyReference.cache
+/src/Core/obj/Debug/net7.0/Core.GeneratedMSBuildEditorConfig.editorconfig
+/src/Core/obj/project.assets.json
+/src/Core/obj/project.nuget.cache
+/src/Domain/obj/Debug/net7.0/Domain.assets.cache
+/src/Domain/obj/Debug/net7.0/Domain.csproj.AssemblyReference.cache
+/src/Domain/obj/Debug/net7.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/src/Domain/obj/Domain.csproj.nuget.dgspec.json
+/src/Domain/obj/Domain.csproj.nuget.g.props
+/src/Domain/obj/project.assets.json
+/src/Domain/obj/project.nuget.cache
+/src/Tests/DomainTests/bin/Debug/net7.0/CoverletSourceRootsMapping
+/src/Tests/DomainTests/obj/Debug/net7.0/DomainTests.assets.cache
+/src/Tests/DomainTests/obj/Debug/net7.0/DomainTests.csproj.AssemblyReference.cache
+/src/Tests/DomainTests/obj/Debug/net7.0/DomainTests.GeneratedMSBuildEditorConfig.editorconfig
+/src/Tests/DomainTests/obj/DomainTests.csproj.nuget.dgspec.json
+/src/Tests/DomainTests/obj/DomainTests.csproj.nuget.g.props
+/src/Tests/DomainTests/obj/project.assets.json
+/src/Tests/DomainTests/obj/project.nuget.cache
