@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static Domain.Common.Address;
@@ -10,8 +11,14 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Domain.Account
 {
+
     public partial class Account
     {
+        private static string RegexEmail = @"^[a-zA-Z]\w+([\.\-]\w+)*@\w+([\.\-][\w])*\.(com|it|org)$";
+        private static Regex RegexRunnerEmail=new Regex(RegexEmail);
+
+        private static string RegexPassword = @"^(?=.*[A-Z]{2})(?=.*[$\^\.]{2})(?=.*[0-9]{2}).{8,20}$";
+        private static Regex RegexRunnerPassword = new Regex(RegexPassword);
         public static bool AccountNameIsValid(string name)
         {
             if (string.IsNullOrEmpty(name)) return false;
@@ -29,19 +36,11 @@ namespace Domain.Account
         }
         public static bool AccountPasswordIsValid(string password)
         {
-            if (string.IsNullOrEmpty(password)) return false;
-            if (password.Length is < 5 or > 20) return false;
-
-            return true;
+            return RegexRunnerPassword.Match(password).Success;
         }
         public static bool AccountEmailIsValid(string email)
         {
-            if (string.IsNullOrEmpty(email)) return false;
-            if (email.Length is < 5 or > 20) return false;
-            if (!email.Contains("@")) return false;
-            if (!(email.Contains(".it") || email.Contains(".com"))) return false;
-            
-            return true;
+            return RegexRunnerEmail.Match(email).Success;
         }
         public static bool AccountPhoneNumberIsValid(int number)
         {

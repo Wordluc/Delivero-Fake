@@ -30,7 +30,7 @@ namespace DomainTests
         [Fact]
         public void CreateAccount_WithCorrectValue_GetAccount()
         {
-            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").IsSuccess;
+            var account = Account.New("wordluc", "ddDA21d$^e", 123456789, "viuai@gmail.com").IsSuccess;
 
             account.Should().BeTrue();
 
@@ -38,7 +38,7 @@ namespace DomainTests
         [Fact]
         public void SetAddress_WithCorrectValue()
         {
-            var account = Account.New("wordluc", "ddddde", 123456789, "viuai@gmail.com").Value;
+            var account = Account.New("wordluc", "ddDA21d$^e", 123456789, "viuai@gmail.com").Value;
 
             var address = Address.New("mussomeli", "Via bla bla", 55);
             account.UpdateAddress(address.Value);
