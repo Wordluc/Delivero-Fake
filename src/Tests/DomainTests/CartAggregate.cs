@@ -36,7 +36,7 @@ namespace DomainTests
             cart.AddExtraIngredient(dishId, "ketchup", 2, 9).Should().BeFalse();
         }
         [Fact]
-        public void GetTotalCostOrder()
+        public void GetTotalCostCart()
         {
             var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
 
@@ -48,7 +48,6 @@ namespace DomainTests
             cart.AddExtraIngredient(dishId2, "panna", 1, 2);
 
             cart.TotalCost.Should().Be(26);
-
 
         }
 
