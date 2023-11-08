@@ -18,7 +18,13 @@ namespace DomainTests
             var result = cart.AddDish("cous cous", 2, 2).IsSuccess;
             result.Should().BeTrue();
         }
-          
+
+        [Fact]
+        public void CreateDish_WithIncorrectCost()
+        {
+            var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
+            cart.AddDish("cous cous", 2, -3).Reasons[0].Message.Should().Be("Cost dish non valido");
+        }
         [Fact]
         public void GetTotalCostSelectedDish()
         {
@@ -33,7 +39,7 @@ namespace DomainTests
         {
             var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
             var dishId = Guid.NewGuid();
-            cart.AddExtraIngredient(dishId, "ketchup", 2, 9).Should().BeFalse();
+            cart.AddExtraIngredient(dishId, "ketchup", 2, 9).Reasons[0].Message.Should().Be("Dish non esiste");
         }
         [Fact]
         public void GetTotalCostCart()

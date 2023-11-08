@@ -13,10 +13,11 @@ namespace Domain.Cart
         public Result<Guid> AddDish(string nameDish,int quantity,float baseCost)
         {
 
-            if (!(
-                  !string.IsNullOrEmpty(nameDish) &&
-                  QuantitySelectedDishIsValid(quantity))                 
-                  ) return Result.Fail("Parametri ordine non corretti");
+            var resultValidation = DishNameIsValid(nameDish).And(QuantitySelectedDishIsValid(quantity)).And(DishCostIsValid(baseCost));
+
+            if (resultValidation.IsFailed)
+                return resultValidation;
+
             var dish = new SelectedDish()
             {
                 ExtraIngredients = new(),
@@ -29,12 +30,12 @@ namespace Domain.Cart
             SelectedDishes.Add(dish);
             return Result.Ok(dish.Id);
         }
-        public bool AddExtraIngredient(Guid dishId,string nameIngredient,int quantity,float unitCost)
+        public Result AddExtraIngredient(Guid dishId,string nameIngredient,int quantity,float unitCost)
         {
-            if (!(IngredientQuantityIsValid(quantity) &&
-                  IngredientNameIsValid(nameIngredient)&&
-                  unitCost>=0)
-                ) return false;
+            var resultValidation = IngredientQuantityIsValid(quantity).And(IngredientNameIsValid(nameIngredient)).And(IngredientCostIsValid(unitCost));
+            if (resultValidation.IsFailed)
+                return resultValidation;
+
             var newIngredient = new ExtraIngredient()
             {
                 Id = Guid.NewGuid(),
@@ -46,9 +47,9 @@ namespace Domain.Cart
             {
                 dish.ExtraIngredients.Add(newIngredient);
                 dish.TotalCost=GetTotalCostSelectedDish(dish);
-                return true;
+                return Result.Ok();
             }
-            return false;
+            return Result.Fail("Dish non esiste");
            
         }
         public bool DeleteSelectedDish(Guid dishId)
@@ -59,7 +60,7 @@ namespace Domain.Cart
         }
         public bool ChangeIngredientNumber(Guid dishId,string nameIngredient,int quantity)
         {
-            if(!IngredientQuantityIsValid(quantity)) return false;
+            if(!IngredientQuantityIsValid(quantity).IsFailed) return false;
 
             if (GetSelectedDish(dishId) is SelectedDish dish)
                 if (dish.ExtraIngredients.FirstOrDefault(x => x.NameIngredient == nameIngredient) is ExtraIngredient ingredient)
