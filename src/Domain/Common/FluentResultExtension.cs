@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Common
 {
     internal static class FluentResultExtension
     {
-        public static Result And (this Result firstResult,Result nextResult)
+        public static Result And(this Result firstResult, Result nextResult)
         {
             if (firstResult.IsFailed) return firstResult;
             return nextResult;

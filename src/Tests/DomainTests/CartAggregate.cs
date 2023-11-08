@@ -32,7 +32,7 @@ namespace DomainTests
             var dishId = cart.AddDish("cous cous", 2, 2).Value;
             cart.AddExtraIngredient(dishId, "ketchup", 2, 9);
             cart.AddExtraIngredient(dishId, "maionese", 1, 2);
-            cart.GetSelectedDish(dishId)!.TotalCost.Should().Be(22);
+            cart.GetSelectedDish(dishId).Value!.TotalCost.Should().Be(22);
         }
         [Fact]
         public void AddIngredient_InNotExistingDish()
