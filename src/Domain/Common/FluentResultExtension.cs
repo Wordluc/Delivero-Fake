@@ -12,7 +12,7 @@ namespace Domain.Common
     {
         public static Result And(this Result firstResult, Result nextResult)
         {
-            if (firstResult.IsFailed) return firstResult;
+            if (firstResult.IsFailed) return nextResult.WithReasons(firstResult.Reasons);
             return nextResult;
         }
     }

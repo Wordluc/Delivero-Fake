@@ -41,7 +41,7 @@ namespace DomainTests
         {
             var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
             var dishId = Guid.NewGuid();
-            cart.AddExtraIngredient(dishId, "ketchup", 2, 9).Reasons[0].Message.Should().Be("Dish non esiste");
+            cart.AddExtraIngredient(dishId, "ketchup", 2, 9).Reasons[0].Message.Should().Be("Dish non esistente");
         }
         [Fact]
         public void GetTotalCostCart()
@@ -59,11 +59,12 @@ namespace DomainTests
 
         }
         [Fact]
-        public void ChangeIngredientnumber_InNotExistingIngredient()
+        public void AddDish_WithWrongName_AndWrongQuantity()
         {
             var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
-            var dishId1 = cart.AddDish("cous cous", 2, 2).Value;
-            cart.ChangeIngredientNumber(dishId1, "ketchup", 5).Reasons[0].Message.Should().Be("Ingredient non esiste");
+            var result = cart.AddDish("", -2, 2);
+            result.Reasons[0].Message.Should().Be("Quantità dish non valida");
+            result.Reasons[1].Message.Should().Be("Nome Dish non valido");
         }
 
     }
