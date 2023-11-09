@@ -14,8 +14,15 @@ namespace Domain.Order
         public string NameDish { get; internal set; }
         public List<OrderedIngredient> Ingredients { get; internal set; }
         public float BaseCost { get; internal set; }
-        public float TotalCost { get; internal set; }
+        public float TotalCost { get { return CalculateTotalCostOrder(); } }
 
+        private float CalculateTotalCostOrder()
+        {
+            float totalCost = BaseCost;
+            foreach (var i in Ingredients)
+                totalCost += i.Quantity * i.UnitCost;
+            return totalCost;
+        }
     }
     public record OrderedIngredient(string Name, int Quantity,float UnitCost);
 }

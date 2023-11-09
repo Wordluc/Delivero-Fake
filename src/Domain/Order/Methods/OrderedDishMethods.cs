@@ -25,7 +25,6 @@ namespace Domain.Order
                 Quantity = quantity,
                 NameDish = nameDish,
                 BaseCost = unitCost,
-                TotalCost=unitCost*quantity
             };
 
             OrderedDishes.Add(dish);
@@ -42,7 +41,6 @@ namespace Domain.Order
             if (GetOrderedDish(dishId) is OrderedDish dish)
             {
                 dish.Ingredients.Add(orderedIngredient);
-                dish.TotalCost = CalculateTotalCost(dish);
                 return true;
             }
             return false;
@@ -61,15 +59,8 @@ namespace Domain.Order
             {
                 return dish;
             }
-            return null;
-            
+            return null;           
         }
-        private static float CalculateTotalCost(OrderedDish dish)
-        {
-            float totalCost = dish.BaseCost;
-            foreach (var i in dish.Ingredients)
-                totalCost += i.Quantity * i.UnitCost;
-            return totalCost;
-        }
+       
     }
 }

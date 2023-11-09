@@ -23,8 +23,7 @@ namespace Domain.Cart
                 Quantity = quantity,
                 NameDish = nameDish,
                 Id = Guid.NewGuid(),
-                BaseCost = baseCost,
-                TotalCost = baseCost,
+                BaseCost = baseCost
             };
             SelectedDishes.Add(dish);
             return Result.Ok(dish.Id);
@@ -45,7 +44,6 @@ namespace Domain.Cart
             if (GetSelectedDish(dishId) is SelectedDish dish)
             {
                 dish.ExtraIngredients.Add(newIngredient);
-                dish.TotalCost=GetTotalCostSelectedDish(dish);
                 return true;
             }
             return false;
@@ -66,7 +64,6 @@ namespace Domain.Cart
                 {
                     if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
                     ingredient.Quantity = quantity;
-                    dish.TotalCost = GetTotalCostSelectedDish(dish);
                     return true;
                 }
                     
@@ -75,13 +72,6 @@ namespace Domain.Cart
         public SelectedDish? GetSelectedDish(Guid dishId)
         {
             return SelectedDishes!.FirstOrDefault(x => x.Id == dishId);
-        }
-        private float GetTotalCostSelectedDish(SelectedDish dish)
-        {
-                float totalCost = dish.BaseCost;
-                foreach (var i in dish.ExtraIngredients)
-                    totalCost +=i.Quantity * i.UnitCost;
-                return totalCost;
         }
     }
 }

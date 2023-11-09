@@ -14,7 +14,15 @@ namespace Domain.Cart
         public int Quantity { get; internal set; }
         public List<ExtraIngredient> ExtraIngredients { get; internal set; }
         public float BaseCost { get; internal set; }
-        public float TotalCost { get; set; }
+        public float TotalCost { get {return GetTotalCostSelectedDish(); } }
+
+        private float GetTotalCostSelectedDish()
+        {
+            float totalCost = BaseCost;
+            foreach (var i in ExtraIngredients)
+                totalCost += i.Quantity * i.UnitCost;
+            return totalCost;
+        }
 
     }
 
