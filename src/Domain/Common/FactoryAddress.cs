@@ -6,37 +6,35 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Common
+namespace Domain.Common;
+
+public record Address
 {
+    public string City { get; init; }
+    public string Via { get; init; }
+    public int AddressNumber { get; init; }
 
-    public record Address
+    private Address(string City, string Via, int AddressNumber)
     {
-        public string City { get; init; }
-        public string Via { get; init; }
-        public int AddressNumber { get; init; }
+        this.City = City;
+        this.Via = Via;
+        this.AddressNumber = AddressNumber;
+    }
 
-        private Address(string City, string Via, int AddressNumber)
-        {
-            this.City = City;
-            this.Via = Via;
-            this.AddressNumber = AddressNumber;
-        }
+    public static Result<Address> New(string city, string via, int addressNumber)
+    {
+        if (IsValid(city, via, addressNumber))
+            return new Address(city, via, addressNumber);
 
-        public static Result<Address> New(string City, string Via, int AddressNumber)
-        {
-            if (IsValid(City, Via, AddressNumber))
-                return new Address(City, Via, AddressNumber);
+        return Result.Fail("Parametri di creazione indirizzo non validi ");
+    }
 
-            return Result.Fail("Parametri di creazione indirizzo non validi ");
-        }
+    private static bool IsValid(string city, string via, int addressNumber)
+    {
+        if (string.IsNullOrEmpty(via)) return false;
+        if (addressNumber <= 0) return false;
+        if (string.IsNullOrEmpty(city)) return false;
 
-        internal static bool IsValid(string City, string Via, int AddressNumber)
-        {
-            if (string.IsNullOrEmpty(Via)) return false;
-            if (AddressNumber <= 0) return false;
-            if (string.IsNullOrEmpty(City)) return false;
-
-            return true;
-        }
+        return true;
     }
 }

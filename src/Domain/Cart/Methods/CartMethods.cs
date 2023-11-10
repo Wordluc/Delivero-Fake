@@ -1,32 +1,29 @@
-﻿using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using FluentResults;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Cart
+namespace Domain.Cart;
+
+public partial class Cart
 {
-    public partial class Cart
+    public static Result<Cart> New(Guid accountId, Guid restaurantId)
     {
-        public static Result<Cart> New(Guid accountId, Guid restaurantId)
+        return Result.Ok(new Cart()
         {
-            return Result.Ok(new Cart()
-            {
-                Id = Guid.NewGuid(),
-                AccountId = accountId,
-                RestaurantId = restaurantId,
-                SelectedDishes = new()
-            });
-        }
-        private float CalculateTotalCostOrder()
+            Id = Guid.NewGuid(),
+            AccountId = accountId,
+            RestaurantId = restaurantId,
+            SelectedDishes = new()
+        });
+    }
+    private float CalculateTotalCostCart()
+    {
+        float totalCost = 0;
+        foreach (var item in SelectedDishes)
         {
-            float totalCost = 0;
-            foreach (var item in SelectedDishes)
-            {
-                totalCost += item.TotalCost;
-            }
-            return totalCost;
+            totalCost += item.TotalCost;
         }
+        return totalCost;
     }
 }
