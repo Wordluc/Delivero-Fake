@@ -8,12 +8,18 @@ using System.Threading.Tasks;
 namespace Domain.Restaurant
 {
 #pragma warning disable CS8618
-    public partial class Restaurant
+    public partial class Restaurant : IEqual<Restaurant>
     {
-        public Guid Id {get; internal set;}= Guid.NewGuid();    
-        public string Name { get; internal set;}
-        public Address Address { get; internal set; }
-        public virtual List<Dish> Menu { get; internal set; } = new();
+        public Guid Id {get; private set;}= Guid.NewGuid();    
+        public string Name { get; private set;}
+        public Address Address { get; private set; }
+        public virtual List<Dish> Menu { get; private set; } = new();
+
+        public override bool Equals(Restaurant? other)
+        {
+            return Id == other?.Id;
+        }
+
 
     }
 }

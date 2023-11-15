@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Domain.Common
 {
 
-    public record Address
+    public class Address:IEqual<Address>
     {
         public string City { get; init; }
         public string Via { get; init; }
@@ -37,6 +37,13 @@ namespace Domain.Common
             if (string.IsNullOrEmpty(City)) return false;
 
             return true;
+        }
+
+        public override bool Equals(Address? other)
+        {
+            return City.Equals(other?.City)&&
+                   Via.Equals(other?.Via)&&  
+                   AddressNumber.Equals(other?.AddressNumber);
         }
     }
 }

@@ -4,7 +4,7 @@
 #pragma warning disable CS8618
 namespace Domain.Account
 {
-    public partial class Account
+    public partial class Account:IEqual<Account>
     {
         public Guid Id { get; private set; }
         public string Username { get; private set; }
@@ -13,6 +13,10 @@ namespace Domain.Account
         public int Phone { get; private set; }
         public Address Address { get; private set; }
         public List<Card> Cards { get; private set; }
+        public override bool Equals(Account? other)
+        {
+            return Id == other?.Id;
+        }
         private Account() { }
     }
     public record Card(string OwnerName,string Iban,DateOnly ExpiredTime);

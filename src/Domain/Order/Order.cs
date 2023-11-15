@@ -9,17 +9,21 @@ using System.Threading.Tasks;
 
 namespace Domain.Order
 {
-    public partial class Order
+    public partial class Order:IEqual<Order>
     {
-        public Guid Id { get; internal set; }
-        public Guid RestaurantId { get; internal set; }
-        public Guid AccountId { get; internal set; }
-        public DateOnly Date { get; internal set; }
-        public Address Address { get; internal set; }
-        public List<OrderedDish> OrderedDishes { get; internal set; }
-        public StatusOrder StatusOrder { get; internal set; } = StatusOrder.Awaiting;
+        public Guid Id { get; private set; }
+        public Guid RestaurantId { get; private set; }
+        public Guid AccountId { get; private set; }
+        public DateOnly Date { get; private set; }
+        public Address Address { get; private set; }
+        public List<OrderedDish> OrderedDishes { get; private set; }
+        public StatusOrder StatusOrder { get; private set; } = StatusOrder.Awaiting;
         public float TotalCost { get { return CalculateTotalCostOrder(); } }
         internal Order() { }
+        public override bool Equals(Order? other)
+        {
+            return Id == other?.Id;
+        }
 
     }
     public enum StatusOrder
