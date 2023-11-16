@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Common;
 
-public record Address
-{
-    public string City { get; init; }
-    public string Via { get; init; }
-    public int AddressNumber { get; init; }
+    public class Address:IEqual<Address>
+    {
+        public string City { get; init; }
+        public string Via { get; init; }
+        public int AddressNumber { get; init; }
 
     private Address(string City, string Via, int AddressNumber)
     {
@@ -35,6 +35,14 @@ public record Address
         if (addressNumber <= 0) return false;
         if (string.IsNullOrEmpty(city)) return false;
 
-        return true;
+            return true;
+        }
+
+        public override bool Equals(Address? other)
+        {
+            return City.Equals(other?.City)&&
+                   Via.Equals(other?.Via)&&  
+                   AddressNumber.Equals(other?.AddressNumber);
+        }
     }
 }

@@ -3,27 +3,28 @@ using FluentResults;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Cart;
-
-public partial class Cart
+namespace Domain.Cart
 {
-    public static Result<Cart> New(Guid accountId, Guid restaurantId)
+    public partial class Cart
     {
-        return Result.Ok(new Cart()
+        public static Result<Cart> New(Guid accountId, Guid restaurantId)
         {
-            Id = Guid.NewGuid(),
-            AccountId = accountId,
-            RestaurantId = restaurantId,
-            SelectedDishes = new()
-        });
-    }
-    private float CalculateTotalCostCart()
-    {
-        float totalCost = 0;
-        foreach (var item in SelectedDishes)
-        {
-            totalCost += item.TotalCost;
+            return Result.Ok(new Cart()
+            {
+                Id = Guid.NewGuid(),
+                AccountId = accountId,
+                RestaurantId = restaurantId,
+                SelectedDishes = new()
+            });
         }
-        return totalCost;
+        private float CalculateTotalCostCart()
+        {
+            float totalCost = 0;
+            foreach (var item in SelectedDishes)
+            {
+                totalCost += item.TotalCost;
+            }
+            return totalCost;
+        }
     }
 }

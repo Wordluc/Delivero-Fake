@@ -1,14 +1,14 @@
 ﻿using FluentResults;
 
-namespace Domain.Order;
-
-public partial class Order
+namespace Domain.Order
 {
-    public Result<Guid> AddOrderedDish(string nameDish, int quantity, float unitCost)
+    public partial class Order
     {
-        if (!string.IsNullOrEmpty(nameDish) &&
-            (quantity <= 0) &&
-            (unitCost < 0)) return Result.Fail("Parametri non corretti per la creazione");
+        public Result<OrderedDish> NewOrderedDish(string nameDish,int quantity,float unitCost)
+        {
+            if (!string.IsNullOrEmpty(nameDish) &&
+                (quantity <= 0) &&
+                (unitCost < 0)) return Result.Fail("Parametri non corretti per la creazione");
 
         var dish = new OrderedDish()
         {
@@ -20,46 +20,47 @@ public partial class Order
             TotalCost = unitCost * quantity
         };
 
-        OrderedDishes.Add(dish);
-        return Result.Ok(dish.Id);
-    }
-    public bool AddExtraIngredientToOrderedDish(Guid dishId, OrderedIngredient orderedIngredient)
-    {
-        if (!(
-                !string.IsNullOrEmpty(orderedIngredient.Name) &&
-                orderedIngredient.Quantity > 0 &&
-                orderedIngredient.UnitCost > 0)) return false;
-
-        if (GetOrderedDish(dishId) is OrderedDish dish)
+            return Result.Ok(dish);
+        }
+        public void AddOrderedDish(OrderedDish order)
         {
+            OrderedDishes.Add(order);
+        }
+        public bool AddExtraIngredientToOrderedDish(OrderedDish dish, OrderedIngredient orderedIngredient)
+        {
+            if (!(
+                   !string.IsNullOrEmpty(orderedIngredient.Name) &&
+                   orderedIngredient.Quantity > 0 &&
+                   orderedIngredient.UnitCost > 0)) return false;
+
             dish.Ingredients.Add(orderedIngredient);
             dish.TotalCost = CalculateTotalCostDish(dish);
             return true;
-        }
-        return false;
-    }
-    public bool UpdateStatus(StatusOrder status)
-    {
-        if (status < StatusOrder)
-            return false;
 
-        StatusOrder = status;
-        return true;
-    }
-    public OrderedDish? GetOrderedDish(Guid dishId)
-    {
-        if (OrderedDishes.FirstOrDefault(x => x.Id == dishId) is OrderedDish dish)
+        }
+        public bool UpdateStatus(StatusOrder status)
         {
-            return dish;
-        }
-        return null;
+            if(status<StatusOrder)
+                return false;
 
-    }
-    private static float CalculateTotalCostDish(OrderedDish dish)
-    {
-        float totalCost = dish.BaseCost;
-        foreach (var i in dish.Ingredients)
-            totalCost += i.Quantity * i.UnitCost;
-        return totalCost;
+            StatusOrder = status;
+            return true;
+        }
+        public OrderedDish? GetOrderedDish(Guid dishId)
+        {
+            if(OrderedDishes.FirstOrDefault(x=>x.Id == dishId) is OrderedDish dish)
+            {
+                return dish;
+            }
+            return null;
+            
+        }
+        private static float CalculateTotalCostDish(OrderedDish dish)
+        {
+            float totalCost = dish.BaseCost;
+            foreach (var i in dish.Ingredients)
+                totalCost += i.Quantity * i.UnitCost;
+            return totalCost;
+        }
     }
 }
