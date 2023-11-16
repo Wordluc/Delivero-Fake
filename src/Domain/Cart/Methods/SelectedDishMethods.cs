@@ -7,8 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Domain.Cart.SelectedDish;
 
-namespace Domain.Cart
-{
+namespace Domain.Cart;
     public partial class Cart
     {
         public Result<SelectedDish> NewDish(string nameDish,int quantity,float baseCost)
@@ -69,9 +68,9 @@ namespace Domain.Cart
                     
             return false;
         }
-        public SelectedDish? GetSelectedDish(Guid dishId)
+        public SelectedDish? GetSelectedDish(string name)
         {
-            return SelectedDishes!.FirstOrDefault(x => x.Id == dishId);
+            return SelectedDishes!.FirstOrDefault(x => x.NameDish == name);
         }
         private static float GetTotalCostSelectedDish(SelectedDish dish)
         {
@@ -81,4 +80,3 @@ namespace Domain.Cart
                 return totalCost;
         }
     }
-}

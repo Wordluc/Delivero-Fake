@@ -1,4 +1,5 @@
 ﻿using Domain.Cart;
+using Domain.Restaurant;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ public class CartAggregate
     public void CreateDish_WithCorrectParameters()
     {
         var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
-        var result = cart.AddDish("cous cous", 2, 2).IsSuccess;
+        var result = cart.NewDish("cous cous", 2, 2).IsSuccess;
         result.Should().BeTrue();
     }
           
@@ -23,29 +24,25 @@ public class CartAggregate
     public void GetTotalCostSelectedDish()
     {
         var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
-        var dishId = cart.AddDish("cous cous", 2, 2).Value;
-        cart.AddExtraIngredient(dishId, "ketchup", 2, 9);
-        cart.AddExtraIngredient(dishId, "maionese", 1, 2);
-        cart.GetSelectedDish(dishId)!.TotalCost.Should().Be(22);
+        var dish = cart.NewDish("cous cous", 2, 2).Value;
+        cart.AddExtraIngredient(dish, "ketchup", 2, 9);
+        cart.AddExtraIngredient(dish, "maionese", 1, 2);
+        dish.TotalCost.Should().Be(22);
     }
-    [Fact]
-    public void AddIngredient_InNotExistingDish()
-    {
-        var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
-        var dishId = Guid.NewGuid();
-        cart.AddExtraIngredient(dishId, "ketchup", 2, 9).Should().BeFalse();
-    }
+
     [Fact]
     public void GetTotalCostCart()
     {
         var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
 
-        var dishId1 = cart.AddDish("cous cous", 2, 2).Value;
-        cart.AddExtraIngredient(dishId1, "ketchup", 2, 9);
-        cart.AddExtraIngredient(dishId1, "maionese", 1, 2);
+        var dish1 = cart.NewDish("cous cous", 2, 2).Value;
+        cart.AddExtraIngredient(dish1, "ketchup", 2, 9);
+        cart.AddExtraIngredient(dish1, "maionese", 1, 2);
+        cart.AddDish(dish1);
 
-        var dishId2=cart.AddDish("mela", 1, 2).Value;
-        cart.AddExtraIngredient(dishId2, "panna", 1, 2);
+        var dish2=cart.NewDish("mela", 1, 2).Value;
+        cart.AddExtraIngredient(dish2, "panna", 1, 2);
+        cart.AddDish(dish2);
 
         cart.TotalCost.Should().Be(26);
 

@@ -30,7 +30,7 @@ public class RestaurantAggregate
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
         Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
-        restaurant.AddNewDish("", 10, "First").IsSuccess.Should().BeFalse();
+        restaurant.NewDish("", 10, "First").IsSuccess.Should().BeFalse();
 
     }
     [Fact]
@@ -39,7 +39,7 @@ public class RestaurantAggregate
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
         Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value ;
-        restaurant.AddNewDish("cous cous", -10, "First").IsSuccess.Should().BeFalse();
+        restaurant.NewDish("cous cous", -10, "First").IsSuccess.Should().BeFalse();
 
     }
     [Fact]
@@ -48,7 +48,7 @@ public class RestaurantAggregate
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
         Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
-        restaurant.AddNewDish("cous cous", 10, "First").IsSuccess.Should().BeTrue();
+        restaurant.NewDish("cous cous", 10, "First").IsSuccess.Should().BeTrue();
 
     }
     [Fact]
@@ -57,8 +57,9 @@ public class RestaurantAggregate
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
         Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
-        restaurant.AddNewDish("cous cous", 10, "First");
-        restaurant.AddNewDish("cous cous", 10, "First").IsFailed.Should().BeTrue();
+        restaurant.NewDish(
+             restaurant.NewDish("cous cous", 10, "First").Value);
+        restaurant.NewDish("cous cous", 10, "First").IsFailed.Should().BeTrue();
 
     }
 
@@ -68,13 +69,13 @@ public class RestaurantAggregate
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
         Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-        Guid dishId=restaurant.AddNewDish("cous cous",10,"First").Value;
+        Dish dish=restaurant.NewDish("cous cous",10,"First").Value;
 
         Ingredient ingredient =
             new("lattosio",
                 new() { new("latto", "") });
 
-        var r = restaurant.AddIngredient(dishId, ingredient);
+        var r = restaurant.AddIngredientTo(dish, ingredient);
 
         r.Should().Be(false);
     }
@@ -84,14 +85,14 @@ public class RestaurantAggregate
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
         Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-        Guid dishId=restaurant.AddNewDish("cous cous", 10, "First").Value;
+        Dish dish=restaurant.NewDish("cous cous", 10, "First").Value;
 
         Ingredient ingredient =
             new("",
                 new() {
                     new("lattosio", "vai in bagno")
                 });
-        var r = restaurant.AddIngredient(dishId,ingredient);
+        var r = restaurant.AddIngredientTo(dish,ingredient);
 
         r.Should().Be(false);
     }

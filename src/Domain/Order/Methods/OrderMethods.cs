@@ -4,8 +4,6 @@ namespace Domain.Order;
 
 public partial class Order
 {
-    public static Result<Order> New(Guid accountId, Guid restaurantId, Address address)
-    {
          public static Result<Order> New(Guid accountId, Guid restaurantId, Address address) {
             return new Order()
             {
@@ -25,5 +23,4 @@ public partial class Order
             }
             return totalCost;
         }
-    }
 }

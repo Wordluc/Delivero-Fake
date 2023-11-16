@@ -31,7 +31,7 @@ public partial class Restaurant
             return Result.Ok(newDish);
 
         }
-        public void AddDish(Dish dish)
+        public void NewDish(Dish dish)
         {
             Menu.Add(dish);
         }

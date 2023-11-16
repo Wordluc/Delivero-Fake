@@ -45,4 +45,3 @@ namespace Domain.Common;
                    AddressNumber.Equals(other?.AddressNumber);
         }
     }
-}
