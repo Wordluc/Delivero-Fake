@@ -32,18 +32,18 @@ namespace Domain.Restaurant
             return Result.Ok(newDish.Id);
 
         }
-        public bool DeleteDish(Guid dishId)
+        public bool DeleteDish(string nameDish)
         {
-            if(GetDish(dishId) is Dish d)
+            if(GetDish(nameDish) is Dish d)
                 return Menu.Remove(d);
             return false;
         }
 
-        public bool AddIngredient(Guid dishId, Ingredient ingredient)
+        public bool AddIngredient(string nameDish, Ingredient ingredient)
         {
             if (!IngredientIsValid(ingredient)) return false;
 
-            if (GetDish(dishId) is Dish dish)
+            if (GetDish(nameDish) is Dish dish)
             {
                 dish.Ingredients.Add(ingredient);
                 return true;
@@ -51,11 +51,11 @@ namespace Domain.Restaurant
             return false;
         }
 
-        public bool UpdateDistCost(Guid dishId,float cost)
+        public bool UpdateDistCost(string nameDish, float cost)
         {
             if (!DishCostIsValid(cost)) return false;
 
-            if (GetDish(dishId) is Dish d)
+            if (GetDish(nameDish) is Dish d)
             {
                 d.Cost = cost;
                 return true;
@@ -63,20 +63,20 @@ namespace Domain.Restaurant
             return false;
         }
 
-        public bool UpdateDishName(Guid dishId, string newName)
+        public bool UpdateDishName(string nameDish, string newName)
         {
             if(IsDishNameExist(newName)==false) return false;
 
-            if (GetDish(dishId) is Dish d)
+            if (GetDish(nameDish) is Dish d)
             {
                 d.NameDish = newName;
                 return true;
             }
             return false;
         }
-        public Dish? GetDish(Guid dishId)
+        public Dish? GetDish(string nameDish)
         {
-            return Menu.FirstOrDefault(x => x.Id == dishId);
+            return Menu.FirstOrDefault(x => x.NameDish == nameDish);
         }
         public bool IsDishNameExist(string nameDish)
         {

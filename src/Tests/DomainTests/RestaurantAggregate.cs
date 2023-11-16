@@ -57,7 +57,7 @@ namespace DomainTests
             var address = Address.New("mussomeli", "Via bla bla", 55);
 
             Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
-            restaurant.AddNewDish("cous cous", 10, "First");
+            var dish=restaurant.AddNewDish("cous cous", 10, "First");
             restaurant.AddNewDish("cous cous", 10, "First").IsFailed.Should().BeTrue();
 
         }
@@ -68,13 +68,13 @@ namespace DomainTests
             var address = Address.New("mussomeli", "Via bla bla", 55);
 
             Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-            Guid dishId=restaurant.AddNewDish("cous cous",10,"First").Value;
+            restaurant.AddNewDish("cous cous",10,"First");
 
             Ingredient ingredient =
                 new("lattosio",
                     new() { new("latto", "") });
             
-            var r = restaurant.AddIngredient(dishId, ingredient);
+            var r = restaurant.AddIngredient("cous cous", ingredient);
 
             r.Should().Be(false);
         }
@@ -84,14 +84,14 @@ namespace DomainTests
             var address = Address.New("mussomeli", "Via bla bla", 55);
 
             Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-            Guid dishId=restaurant.AddNewDish("cous cous", 10, "First").Value;
+            restaurant.AddNewDish("cous cous", 10, "First");
 
             Ingredient ingredient =
                 new("",
                            new() { 
                                new("lattosio", "vai in bagno") 
                            });
-            var r = restaurant.AddIngredient(dishId,ingredient);
+            var r = restaurant.AddIngredient("cous cous",ingredient);
 
             r.Should().Be(false);
         }
