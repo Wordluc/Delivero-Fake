@@ -1,5 +1,4 @@
-﻿using Domain.Restaurant;
-using FluentResults;
+﻿using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace Domain.Cart
 {
     public partial class Cart
     {
-        public Result<SelectedDish> NewDish(string nameDish,int quantity,float baseCost)
+        public Result<Guid> AddDish(string nameDish,int quantity,float baseCost)
         {
 
             if (!(
@@ -27,14 +26,10 @@ namespace Domain.Cart
                 BaseCost = baseCost,
                 TotalCost = baseCost,
             };
-
-            return Result.Ok(dish);
-        }
-        public void AddDish(SelectedDish dish)
-        {
             SelectedDishes.Add(dish);
+            return Result.Ok(dish.Id);
         }
-        public bool AddExtraIngredient(SelectedDish dish,string nameIngredient,int quantity,float unitCost)
+        public bool AddExtraIngredient(Guid dishId,string nameIngredient,int quantity,float unitCost)
         {
             if (!(IngredientQuantityIsValid(quantity) &&
                   IngredientNameIsValid(nameIngredient)&&
@@ -47,25 +42,33 @@ namespace Domain.Cart
                 Quantity = quantity,
                 UnitCost = unitCost
             };
-            dish.ExtraIngredients.Add(newIngredient);
-            dish.TotalCost=GetTotalCostSelectedDish(dish);
-            return true;
-           
-        }
-        public bool DeleteSelectedDish(SelectedDish dish)
-        {
-            return SelectedDishes.Remove(dish);
-        }
-        public bool ChangeIngredientNumber(SelectedDish dish,string nameIngredient,int quantity)
-        {
-            if(!IngredientQuantityIsValid(quantity)) return false;
-            if (dish.ExtraIngredients.FirstOrDefault(x => x.NameIngredient == nameIngredient) is ExtraIngredient ingredient)
+            if (GetSelectedDish(dishId) is SelectedDish dish)
             {
-                if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
-                ingredient.Quantity = quantity;
-                dish.TotalCost = GetTotalCostSelectedDish(dish);
+                dish.ExtraIngredients.Add(newIngredient);
+                dish.TotalCost=GetTotalCostSelectedDish(dish);
                 return true;
             }
+            return false;
+           
+        }
+        public bool DeleteSelectedDish(Guid dishId)
+        {
+            if (GetSelectedDish(dishId) is SelectedDish dish)
+                return SelectedDishes.Remove(dish);
+            return true;
+        }
+        public bool ChangeIngredientNumber(Guid dishId,string nameIngredient,int quantity)
+        {
+            if(!IngredientQuantityIsValid(quantity)) return false;
+
+            if (GetSelectedDish(dishId) is SelectedDish dish)
+                if (dish.ExtraIngredients.FirstOrDefault(x => x.NameIngredient == nameIngredient) is ExtraIngredient ingredient)
+                {
+                    if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
+                    ingredient.Quantity = quantity;
+                    dish.TotalCost = GetTotalCostSelectedDish(dish);
+                    return true;
+                }
                     
             return false;
         }
@@ -73,7 +76,7 @@ namespace Domain.Cart
         {
             return SelectedDishes!.FirstOrDefault(x => x.Id == dishId);
         }
-        private static float GetTotalCostSelectedDish(SelectedDish dish)
+        private float GetTotalCostSelectedDish(SelectedDish dish)
         {
                 float totalCost = dish.BaseCost;
                 foreach (var i in dish.ExtraIngredients)

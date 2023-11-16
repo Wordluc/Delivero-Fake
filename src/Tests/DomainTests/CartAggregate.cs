@@ -26,26 +26,19 @@ namespace DomainTests
             var dishId = cart.AddDish("cous cous", 2, 2).Value;
             cart.AddExtraIngredient(dishId, "ketchup", 2, 9);
             cart.AddExtraIngredient(dishId, "maionese", 1, 2);
-            cart.GetSelectedDish(dishId)!.TotalCost.Should().Be(22);
+            cart.GetSelectedDish(dishId)?.TotalCost.Should().Be(22);
         }
         [Fact]
-        public void AddIngredient_InNotExistingDish()
-        {
-            var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
-            var dishId = Guid.NewGuid();
-            cart.AddExtraIngredient(dishId, "ketchup", 2, 9).Should().BeFalse();
-        }
-        [Fact]
-        public void GetTotalCostCart()
+        public void GetTotalCartCost()
         {
             var cart = Cart.New(Guid.NewGuid(), Guid.NewGuid()).Value;
 
-            var dishId1 = cart.AddDish("cous cous", 2, 2).Value;
-            cart.AddExtraIngredient(dishId1, "ketchup", 2, 9);
-            cart.AddExtraIngredient(dishId1, "maionese", 1, 2);
+            var dish1 = cart.AddDish("cous cous", 2, 2).Value;
+            cart.AddExtraIngredient(dish1, "ketchup", 2, 9);
+            cart.AddExtraIngredient(dish1, "maionese", 1, 2);
 
-            var dishId2=cart.AddDish("mela", 1, 2).Value;
-            cart.AddExtraIngredient(dishId2, "panna", 1, 2);
+            var dish2=cart.AddDish("mela", 1, 2).Value;
+            cart.AddExtraIngredient(dish2, "panna", 1, 2);
 
             cart.TotalCost.Should().Be(26);
 

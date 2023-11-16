@@ -12,7 +12,7 @@ namespace Domain.Order
 {
     public partial class Order
     {
-        public Result<OrderedDish> NewOrderedDish(string nameDish,int quantity,float unitCost)
+        public Result<Guid> AddOrderedDish(string nameDish,int quantity,float unitCost)
         {
             if (!string.IsNullOrEmpty(nameDish) &&
                 (quantity <= 0) &&
@@ -28,23 +28,24 @@ namespace Domain.Order
                 TotalCost=unitCost*quantity
             };
 
-            return Result.Ok(dish);
+            OrderedDishes.Add(dish);
+            return Result.Ok(dish.Id);
         }
-        public void AddOrderedDish(OrderedDish order)
-        {
-            OrderedDishes.Add(order);
-        }
-        public bool AddExtraIngredientToOrderedDish(OrderedDish dish, OrderedIngredient orderedIngredient)
+        public bool AddExtraIngredientToOrderedDish(Guid dishId, OrderedIngredient orderedIngredient)
         {
             if (!(
                    !string.IsNullOrEmpty(orderedIngredient.Name) &&
                    orderedIngredient.Quantity > 0 &&
                    orderedIngredient.UnitCost > 0)) return false;
 
-            dish.Ingredients.Add(orderedIngredient);
-            dish.TotalCost = CalculateTotalCostDish(dish);
-            return true;
 
+            if (GetOrderedDish(dishId) is OrderedDish dish)
+            {
+                dish.Ingredients.Add(orderedIngredient);
+                dish.TotalCost = CalculateTotalCostDish(dish);
+                return true;
+            }
+            return false;
         }
         public bool UpdateStatus(StatusOrder status)
         {
