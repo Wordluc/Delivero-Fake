@@ -1,4 +1,6 @@
-﻿using FluentResults;
+﻿using Domain.Common;
+using Domain.Order;
+using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,11 @@ namespace Domain.Cart
         public Result<Guid> AddDish(string nameDish,int quantity,float baseCost)
         {
 
-            if (!(
-                  !string.IsNullOrEmpty(nameDish) &&
-                  QuantitySelectedDishIsValid(quantity))                 
-                  ) return Result.Fail("Parametri ordine non corretti");
+            var resultValidation = DishNameIsValid(nameDish).And(QuantitySelectedDishIsValid(quantity)).And(DishCostIsValid(baseCost));
+
+            if (resultValidation.IsFailed)
+                return resultValidation;
+
             var dish = new SelectedDish()
             {
                 ExtraIngredients = new(),
@@ -29,12 +32,12 @@ namespace Domain.Cart
             SelectedDishes.Add(dish);
             return Result.Ok(dish.Id);
         }
-        public bool AddExtraIngredient(Guid dishId,string nameIngredient,int quantity,float unitCost)
+        public Result AddExtraIngredient(Guid dishId,string nameIngredient,int quantity,float unitCost)
         {
-            if (!(IngredientQuantityIsValid(quantity) &&
-                  IngredientNameIsValid(nameIngredient)&&
-                  unitCost>=0)
-                ) return false;
+            var resultValidation = IngredientQuantityIsValid(quantity).And(IngredientNameIsValid(nameIngredient)).And(IngredientCostIsValid(unitCost));
+            if (resultValidation.IsFailed)
+                return resultValidation;
+
             var newIngredient = new ExtraIngredient()
             {
                 Id = Guid.NewGuid(),
@@ -42,39 +45,44 @@ namespace Domain.Cart
                 Quantity = quantity,
                 UnitCost = unitCost
             };
-            if (GetSelectedDish(dishId) is SelectedDish dish)
-            {
-                dish.ExtraIngredients.Add(newIngredient);
-                dish.TotalCost=GetTotalCostSelectedDish(dish);
-                return true;
-            }
-            return false;
-           
+            var result = GetSelectedDish(dishId);
+            if (result.IsFailed) return result.ToResult();
+                       
+            result.Value.ExtraIngredients.Add(newIngredient);
+            result.Value.TotalCost=GetTotalCostSelectedDish(result.Value);
+            return Result.Ok();
         }
-        public bool DeleteSelectedDish(Guid dishId)
+        public Result<SelectedDish> DeleteSelectedDish(Guid dishId)
         {
-            if (GetSelectedDish(dishId) is SelectedDish dish)
-                return SelectedDishes.Remove(dish);
-            return true;
+            var result = GetSelectedDish(dishId);
+            if (result.IsFailed) return result;
+            
+            return SelectedDishes.Remove(result.Value)?Result.Ok():Result.Fail("Impossibile eliminare il piatto");
         }
-        public bool ChangeIngredientNumber(Guid dishId,string nameIngredient,int quantity)
+        public Result ChangeIngredientNumber(Guid dishId,string nameIngredient,int quantity)
         {
-            if(!IngredientQuantityIsValid(quantity)) return false;
+            var result = IngredientQuantityIsValid(quantity);
+            if(result.IsFailed)return result;
 
-            if (GetSelectedDish(dishId) is SelectedDish dish)
-                if (dish.ExtraIngredients.FirstOrDefault(x => x.NameIngredient == nameIngredient) is ExtraIngredient ingredient)
-                {
-                    if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
-                    ingredient.Quantity = quantity;
-                    dish.TotalCost = GetTotalCostSelectedDish(dish);
-                    return true;
-                }
-                    
-            return false;
+            var resultDish = GetSelectedDish(dishId);
+            if (resultDish.IsFailed) return result;
+
+            var dish = resultDish.Value;
+            if (dish.ExtraIngredients.FirstOrDefault(x => x.NameIngredient == nameIngredient) is ExtraIngredient ingredient)
+            {
+                if (quantity == 0) dish.ExtraIngredients.Remove(ingredient);
+                ingredient.Quantity = quantity;
+                dish.TotalCost = GetTotalCostSelectedDish(dish);
+                return Result.Ok();
+            }
+            return Result.Fail("Ingredient non esiste");
+   
+
         }
-        public SelectedDish? GetSelectedDish(Guid dishId)
+        public Result<SelectedDish> GetSelectedDish(Guid dishId)
         {
-            return SelectedDishes!.FirstOrDefault(x => x.Id == dishId);
+            if (SelectedDishes!.FirstOrDefault(x => x.Id == dishId) is SelectedDish dish) return Result.Ok(dish);
+            return Result.Fail("Dish non esistente");
         }
         private float GetTotalCostSelectedDish(SelectedDish dish)
         {

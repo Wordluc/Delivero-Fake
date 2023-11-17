@@ -15,14 +15,14 @@ namespace Domain.Account
     public partial class Account
     {
         private static string RegexEmail = @"^[a-zA-Z]\w+([\.\-]\w+)*@\w+([\.\-][\w])*\.(com|it|org)$";
-        private static Regex RegexRunnerEmail=new Regex(RegexEmail);
+        private static Regex RegexRunnerEmail=new(RegexEmail);
 
         private static string RegexPassword = @"^(?=.*[A-Z]{2})(?=.*[$\^\.]{2})(?=.*[0-9]{2}).{8,20}$";
-        private static Regex RegexRunnerPassword = new Regex(RegexPassword);
+        private static Regex RegexRunnerPassword = new(RegexPassword);
 
         //  private static string RegexIban = @"^\b[A-Z]{2}[0-9]{2}(?:[ ]?[0-9]{4}){4}(?!(?:[ ]?[0-9]){3})(?:[ ]?[0-9]{1,2})?\b$";
         private static string RegexIban = @"^[A-Z]{2}[0-9]{5}$";
-        private static Regex RegexRunnerIban = new Regex(RegexIban);
+        private static Regex RegexRunnerIban = new(RegexIban);
         public static bool AccountNameIsValid(string name)
         {
             if (string.IsNullOrEmpty(name)) return false;
