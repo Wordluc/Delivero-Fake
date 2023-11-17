@@ -1,5 +1,4 @@
-﻿namespace Domain.Restaurant
-{
+﻿namespace Domain.Restaurant;
 #pragma warning disable CS8618
     public class Dish:IEqual<Dish>
     {
@@ -21,5 +20,5 @@
     {
         First, Second, Desert
     }
-}
+
 

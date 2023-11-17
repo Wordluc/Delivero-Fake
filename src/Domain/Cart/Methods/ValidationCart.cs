@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Cart
+namespace Domain.Cart;
+
+public partial class Cart
 {
-    public partial class Cart
-    {
 
         private static Result QuantitySelectedDishIsValid(int quantity)
         {
@@ -43,4 +43,3 @@ namespace Domain.Cart
             return Result.Ok();
         }
     }
-}

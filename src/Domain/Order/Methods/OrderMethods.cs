@@ -1,15 +1,9 @@
 ﻿using Domain.Common;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Domain.Order;
 
-namespace Domain.Order
+public partial class Order
 {
-    public partial class Order
-    {
          public static Result<Order> New(Guid accountId, Guid restaurantId, Address address) {
             return new Order()
             {
@@ -29,5 +23,4 @@ namespace Domain.Order
             }
             return totalCost;
         }
-    }
 }

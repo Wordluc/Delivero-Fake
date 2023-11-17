@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Domain.Account
+namespace Domain.Account;
+
+public partial class Account
 {
-    public partial class Account
-    {
-        private const int CifrePhoneNumber = 9;
+    private const int CIFRE_PHONE_NUMBER = 9;
 
         public static Result<Account> New(string username,string password,int numberPhone,string email)
         {
@@ -80,4 +80,3 @@ namespace Domain.Account
             return Result.Ok();
         }
     }
-}

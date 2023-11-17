@@ -8,8 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Domain.Cart.SelectedDish;
 
-namespace Domain.Cart
-{
+namespace Domain.Cart;
     public partial class Cart
     {
         public Result<Guid> AddDish(string nameDish,int quantity,decimal baseCost)
@@ -86,4 +85,3 @@ namespace Domain.Cart
             return Result.Fail("Dish non esistente");
         }   
     }
-}

@@ -9,8 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace DomainTests
-{
+namespace DomainTests;
     public class CartAggregate
     {
         [Fact]
@@ -55,7 +54,7 @@ namespace DomainTests
             var dish2=cart.AddDish("mela", 1, 2).Value;
             cart.AddExtraIngredient(dish2, "panna", 1, 2);
 
-            cart.TotalCost.Should().Be(26);
+        cart.TotalCost.Should().Be(26);
 
         }
         [Fact]
@@ -67,5 +66,4 @@ namespace DomainTests
             result.Reasons[1].Message.Should().Be("Nome Dish non valido");
         }
 
-    }
 }

@@ -8,24 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Domain.Restaurant
+namespace Domain.Restaurant;
+
+public partial class Restaurant
 {
-    public partial class Restaurant
-    {
 
         public static Result<Restaurant> New(string name, Address address)
         {
             var result = NameRestaurantIsValid(name);
             if (result.IsFailed) return result;
 
-            var newRestaurant = new Restaurant()
-            {
-                 Id=Guid.NewGuid(),
-                Name = name,
-                Address = address
-            };
-            return Result.Ok(newRestaurant);
-        }
+        var newRestaurant = new Restaurant()
+        {
+            Id=Guid.NewGuid(),
+            Name = name,
+            Address = address
+        };
+        return Result.Ok(newRestaurant);
+    }
 
         public Result UpdateName(string name)
         {
@@ -41,4 +41,4 @@ namespace Domain.Restaurant
             Address = address;
         }     
     }
-}
+

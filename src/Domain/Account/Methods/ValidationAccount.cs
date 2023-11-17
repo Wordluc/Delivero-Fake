@@ -10,8 +10,7 @@ using System.Xml.Linq;
 using static Domain.Common.Address;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Domain.Account
-{
+namespace Domain.Account;
 
     public partial class Account
     {
@@ -24,7 +23,8 @@ namespace Domain.Account
         //  private static string RegexIban = @"^\b[A-Z]{2}[0-9]{2}(?:[ ]?[0-9]{4}){4}(?!(?:[ ]?[0-9]){3})(?:[ ]?[0-9]{1,2})?\b$";
         private static string RegexIban = @"^[A-Z]{2}[0-9]{5}$";
         private static Regex RegexRunnerIban = new(RegexIban);
-   
+
+        private const int CifrePhoneNumber=9;
         public static Result AccountUsernameIsValid(string username)
         {
           
@@ -71,4 +71,3 @@ namespace Domain.Account
             return result;
         }
     }
-}

@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Restaurant
-{
+namespace Domain.Restaurant;
 #pragma warning disable CS8618
     public partial class Restaurant : IEqual<Restaurant>
     {
@@ -21,5 +20,4 @@ namespace Domain.Restaurant
         }
 
 
-    }
 }
