@@ -6,7 +6,7 @@ namespace Domain.Cart
 {
     public partial class Cart:IEqual<Cart>
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get;private set; }
         public Guid AccountId { get; private set; }
         public Guid RestaurantId { get; private set; }
         public List<SelectedDish> SelectedDishes {  get; private set; }

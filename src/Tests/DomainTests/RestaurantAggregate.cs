@@ -56,10 +56,9 @@ public class RestaurantAggregate
     {
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
-        Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
-        restaurant.NewDish(
-             restaurant.NewDish("cous cous", 10, "First").Value);
-        restaurant.NewDish("cous cous", 10, "First").IsFailed.Should().BeTrue();
+            Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
+            var dish=restaurant.AddNewDish("cous cous", 10, "First");
+            restaurant.AddNewDish("cous cous", 10, "First").IsFailed.Should().BeTrue();
 
     }
 
@@ -68,14 +67,14 @@ public class RestaurantAggregate
     {
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
-        Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-        Dish dish=restaurant.NewDish("cous cous",10,"First").Value;
+            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
+            restaurant.AddNewDish("cous cous",10,"First");
 
-        Ingredient ingredient =
-            new("lattosio",
-                new() { new("latto", "") });
-
-        var r = restaurant.AddIngredientTo(dish, ingredient);
+            Ingredient ingredient =
+                new("lattosio",
+                    new() { new("latto", "") });
+            
+            var r = restaurant.AddIngredient("cous cous", ingredient);
 
         r.Should().Be(false);
     }
@@ -84,15 +83,15 @@ public class RestaurantAggregate
     {
         var address = Address.New("mussomeli", "Via bla bla", 55);
 
-        Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
-        Dish dish=restaurant.NewDish("cous cous", 10, "First").Value;
+            Restaurant restaurant = Restaurant.New("trattoria da luca", address.Value).Value;
+            restaurant.AddNewDish("cous cous", 10, "First");
 
-        Ingredient ingredient =
-            new("",
-                new() {
-                    new("lattosio", "vai in bagno")
-                });
-        var r = restaurant.AddIngredientTo(dish,ingredient);
+            Ingredient ingredient =
+                new("",
+                           new() { 
+                               new("lattosio", "vai in bagno") 
+                           });
+            var r = restaurant.AddIngredient("cous cous",ingredient);
 
         r.Should().Be(false);
     }
