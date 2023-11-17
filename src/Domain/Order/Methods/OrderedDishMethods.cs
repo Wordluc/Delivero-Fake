@@ -1,22 +1,20 @@
 ﻿using Domain.Cart;
+using Domain.Common;
 using Domain.Restaurant;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Order
 {
     public partial class Order
     {
-        public Result<Guid> AddOrderedDish(string nameDish,int quantity,float unitCost)
+        public Result<Guid> AddOrderedDish(string nameDish,int quantity,decimal unitCost)
         {
-            if (!string.IsNullOrEmpty(nameDish) &&
-                (quantity <= 0) &&
-                (unitCost < 0)) return Result.Fail("Parametri non corretti per la creazione");
+            var result = IsNameDishOrderedValid(nameDish)
+                 .And(IsQuantityDishOrderedValid(quantity)
+                 .And(IsUnitCostOrderredDishValid(unitCost)));
+
+
+            if (result.IsFailed) return result;     
 
             var dish = new OrderedDish()
             {
@@ -24,52 +22,46 @@ namespace Domain.Order
                 Ingredients = new(),
                 Quantity = quantity,
                 NameDish = nameDish,
-                BaseCost = unitCost,
-                TotalCost=unitCost*quantity
+                BaseCost = unitCost
             };
 
             OrderedDishes.Add(dish);
             return Result.Ok(dish.Id);
         }
-        public bool AddExtraIngredientToOrderedDish(Guid dishId, OrderedIngredient orderedIngredient)
+        public Result AddExtraIngredientToOrderedDish(Guid dishId, OrderedIngredient orderedIngredient)
         {
-            if (!(
-                   !string.IsNullOrEmpty(orderedIngredient.Name) &&
-                   orderedIngredient.Quantity > 0 &&
-                   orderedIngredient.UnitCost > 0)) return false;
+            var result = IsNameExtraIngredientValid(orderedIngredient.Name)
+                        .And(IsQuantityExtraIngredientValid(orderedIngredient.Quantity)
+                        .And(IsUnitCostExtraIngredientValid(orderedIngredient.UnitCost)));
 
+            if (result.IsFailed) return result;
 
-            if (GetOrderedDish(dishId) is OrderedDish dish)
-            {
-                dish.Ingredients.Add(orderedIngredient);
-                dish.TotalCost = CalculateTotalCostDish(dish);
-                return true;
-            }
-            return false;
+            var resultDish = GetOrderedDish(dishId);
+            if (result.IsFailed) return result;
+
+            resultDish.Value.Ingredients.Add(orderedIngredient);
+            return Result.Ok();
+
         }
-        public bool UpdateStatus(StatusOrder status)
-        {
-            if(status<StatusOrder)
-                return false;
+
+            public Result UpdateStatus(StatusOrder status)
+            {
+            var result = IsStatusOrderValid(status);
+            if (result.IsFailed) return result;
 
             StatusOrder = status;
-            return true;
-        }
-        public OrderedDish? GetOrderedDish(Guid dishId)
-        {
-            if(OrderedDishes.FirstOrDefault(x=>x.Id == dishId) is OrderedDish dish)
-            {
-                return dish;
+            return Result.Ok();
             }
-            return null;
-            
+
+            public Result<OrderedDish> GetOrderedDish(Guid dishId)
+            {
+                if (OrderedDishes.FirstOrDefault(x => x.Id == dishId) is OrderedDish dish)
+                {
+                    return Result.Ok(dish);
+                }
+                return Result.Fail("Piatto ordinato non trovato");
+
+            }
         }
-        private static float CalculateTotalCostDish(OrderedDish dish)
-        {
-            float totalCost = dish.BaseCost;
-            foreach (var i in dish.Ingredients)
-                totalCost += i.Quantity * i.UnitCost;
-            return totalCost;
-        }
+        
     }
-}

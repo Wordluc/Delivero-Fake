@@ -1,15 +1,9 @@
 ﻿using Domain.Common;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Domain.Order;
 
-namespace Domain.Order
+public partial class Order
 {
-    public partial class Order
-    {
          public static Result<Order> New(Guid accountId, Guid restaurantId, Address address) {
             return new Order()
             {
@@ -21,13 +15,12 @@ namespace Domain.Order
                 Id = Guid.NewGuid()
             };
         }
-        private float CalculateTotalCostOrder()
+        private decimal CalculateTotalCostOrder()
         {
-            float totalCost = 0;
+            decimal totalCost = 0;
             foreach (var item in OrderedDishes) {
                totalCost += item.TotalCost;
             }
             return totalCost;
         }
-    }
 }

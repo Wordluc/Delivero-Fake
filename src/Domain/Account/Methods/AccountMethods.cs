@@ -7,20 +7,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Domain.Account
+namespace Domain.Account;
+
+public partial class Account
 {
-    public partial class Account
-    {
-        private const int CifrePhoneNumber = 9;
+    private const int CIFRE_PHONE_NUMBER = 9;
 
         public static Result<Account> New(string username,string password,int numberPhone,string email)
         {
-            if (!(
-                  AccountUsernameIsValid(username) &&
-                  AccountPasswordIsValid(password) &&   
-                  AccountPhoneNumberIsValid(numberPhone)&&
-                  AccountEmailIsValid(email))
-                )return Result.Fail("Parametri non validi per la creazione dell'account");
+            var result = AccountUsernameIsValid(username).And(
+                  AccountPasswordIsValid(password)).And(
+                  AccountPhoneNumberIsValid(numberPhone).And(
+                  AccountEmailIsValid(email)));
+                
+            if (result.IsFailed) return result;
 
             var newAccount = new Account()
             {
@@ -33,47 +33,50 @@ namespace Domain.Account
 
             return Result.Ok(newAccount);
         }
-        public bool AddCard(Card card)
+        public Result AddCard(Card card)
         {
-            if(!CardIsValid(card))return false;
+            var result=CardIsValid(card);
+            if (result.IsFailed) return result;
 
             Cards.Add(card);
-            return true;
+            return Result.Ok();
         }
-        public bool UpdateUsername (string username)
+        public Result UpdateUsername (string username)
         {
-            if (!AccountUsernameIsValid(username)) return false;
-
+            var result = AccountUsernameIsValid(username);
+            if (result.IsFailed) return result;
             Username = username;
-            return true;
+            return Result.Ok();
         }
-        public bool UpdatePassword(string password)
+        public Result UpdatePassword(string password)
         {
-           if(!AccountPasswordIsValid(password)) return false;  
+            var result = AccountPasswordIsValid(password);
+           if (result.IsFailed) return result;
 
             Password = password;
-            return true;
+            return Result.Ok();
         }
-        public bool UpdateEmail(string email)
+        public Result UpdateEmail(string email)
         {
-            if(!AccountEmailIsValid(email)) return false;
+            var result = AccountEmailIsValid(email);
+            if (result.IsFailed) return result;
 
             Email = email;
-            return true;
+            return Result.Ok();
         }
-        public bool UpdatePhone(int number)
+        public Result UpdatePhone(int number)
         {
-            if (!AccountPhoneNumberIsValid(number)) return false;
+            var result = AccountPhoneNumberIsValid(number);
+            if(result.IsFailed) return result;
 
             Phone = number;
-            return true;
+            return Result.Ok();
         }
-        public bool UpdateAddress(Address address)
+        public Result UpdateAddress(Address address)
         {
-            if (!AccountAddressIsValid(address)) return false;
-
+            var result = AccountAddressIsValid(address);
+            if (result.IsFailed) return result;
             Address = address;
-            return true;
+            return Result.Ok();
         }
     }
-}

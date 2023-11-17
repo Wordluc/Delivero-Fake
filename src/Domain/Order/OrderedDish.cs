@@ -13,13 +13,20 @@ namespace Domain.Order
         public int Quantity { get; internal set; }
         public string NameDish { get; internal set; }
         public List<OrderedIngredient> Ingredients { get; internal set; }
-        public float BaseCost { get; internal set; }
-        public float TotalCost { get; internal set; }
+        public decimal BaseCost { get; internal set; }
+        public decimal TotalCost { get { return CalculateTotalCostDish(this); } }
 
         public override bool Equals(OrderedDish? other)
         {
             return Id == other?.Id;
         }
+        private static decimal CalculateTotalCostDish(OrderedDish dish)
+        {
+            decimal totalCost = dish.BaseCost;
+            foreach (var i in dish.Ingredients)
+                totalCost += i.Quantity * i.UnitCost;
+            return totalCost;
+        }
     }
-    public record OrderedIngredient(string Name, int Quantity,float UnitCost);
+    public record OrderedIngredient(string Name, int Quantity,decimal UnitCost);
 }

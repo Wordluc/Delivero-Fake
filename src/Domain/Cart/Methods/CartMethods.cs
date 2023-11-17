@@ -1,7 +1,5 @@
-﻿using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using FluentResults;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,9 +17,9 @@ namespace Domain.Cart
                 SelectedDishes = new()
             });
         }
-        private float CalculateTotalCostCart()
+        private decimal CalculateTotalCostCart()
         {
-            float totalCost = 0;
+            decimal totalCost = 0;
             foreach (var item in SelectedDishes)
             {
                 totalCost += item.TotalCost;

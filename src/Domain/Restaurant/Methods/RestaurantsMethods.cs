@@ -8,41 +8,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Domain.Restaurant
+namespace Domain.Restaurant;
+
+public partial class Restaurant
 {
-    public partial class Restaurant
-    {
 
         public static Result<Restaurant> New(string name, Address address)
         {
-            if (!(
-                NameRestaurantIsValid(name)
-                ))
-                return Result.Fail("parametri di creazione restaurant non validi") ;
+            var result = NameRestaurantIsValid(name);
+            if (result.IsFailed) return result;
 
-            var newRestaurant = new Restaurant()
-            {
-                 Id=Guid.NewGuid(),
-                Name = name,
-                Address = address
-            };
-            return Result.Ok(newRestaurant);
-        }
-
-        public bool UpdateName(string name)
+        var newRestaurant = new Restaurant()
         {
-            if (!NameRestaurantIsValid(name)) return false;
+            Id=Guid.NewGuid(),
+            Name = name,
+            Address = address
+        };
+        return Result.Ok(newRestaurant);
+    }
+
+        public Result UpdateName(string name)
+        {
+            var result = NameRestaurantIsValid(name);
+            if (result.IsFailed) return result;
 
             Name = name;
-            return true;
+            return Result.Ok();
     
         }
-        public bool UpdateAddress(Address address)
+        public void UpdateAddress(Address address)
         {            
             Address = address;
-            return false;
-        }
-
-     
+        }     
     }
-}
+

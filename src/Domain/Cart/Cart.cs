@@ -10,7 +10,7 @@ namespace Domain.Cart
         public Guid AccountId { get; private set; }
         public Guid RestaurantId { get; private set; }
         public List<SelectedDish> SelectedDishes {  get; private set; }
-        public float TotalCost { get { return CalculateTotalCostCart(); } }
+        public decimal TotalCost { get { return CalculateTotalCostCart(); } }
         private Cart() { }
 
         public override bool Equals(Cart? other)

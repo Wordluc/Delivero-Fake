@@ -1,4 +1,5 @@
 ﻿
+using Domain.Common;
 using FluentResults;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,13 @@ namespace Domain.Restaurant
     public partial class Restaurant
     {
 
-        public Result<Guid> AddNewDish(string nameDish, float cost, string type)
+        public Result<Guid> AddNewDish(string nameDish, decimal cost, string type)
         {
-            if(!(
-                 (IsDishNameExist(nameDish)==false)&&
-                 DishNameIsValid(nameDish) &&
-                 DishCostIsValid(cost)&&
-                 DishTypeIsValid(type))
-               )return Result.Fail("Impossibile creare un piatto ");
+            var result=(DishNameIsValid(nameDish))
+                           .And(DishCostIsValid(cost))
+                           .And(DishTypeIsValid(type));
+            if(result.IsFailed) return result;
+            if(DishNameExist(nameDish).IsSuccess) return Result.Fail("Nome piatto già esiste");
 
             var newDish = new Dish()
             {
@@ -32,55 +32,63 @@ namespace Domain.Restaurant
             return Result.Ok(newDish.Id);
 
         }
-        public bool DeleteDish(string nameDish)
+        public Result DeleteDish(string nameDish)
         {
-            if(GetDish(nameDish) is Dish d)
-                return Menu.Remove(d);
-            return false;
+            var result = GetDish(nameDish);
+            if (result.IsFailed == false) return result.ToResult();
+            Menu.Remove(result.Value);
+            return Result.Ok();
         }
 
-        public bool AddIngredient(string nameDish, Ingredient ingredient)
+        public Result AddIngredient(string nameDish, Ingredient ingredient)
         {
-            if (!IngredientIsValid(ingredient)) return false;
+            var result = IngredientNameIsValid(ingredient.Name).And(
+                IntolerancesAreValid(ingredient.Intolerances));
+            if (result.IsFailed) return result;
 
-            if (GetDish(nameDish) is Dish dish)
-            {
-                dish.Ingredients.Add(ingredient);
-                return true;
-            }
-            return false;
+            var resultGet = GetDish(nameDish);
+            if(resultGet.IsFailed)return resultGet.ToResult();
+      
+            resultGet.Value.Ingredients.Add(ingredient);
+            return Result.Ok();
+                        
         }
 
-        public bool UpdateDistCost(string nameDish, float cost)
+        public Result UpdateDistCost(string nameDish, decimal cost)
         {
-            if (!DishCostIsValid(cost)) return false;
+            var result = DishCostIsValid(cost);
+            if(result.IsFailed) return result;
 
-            if (GetDish(nameDish) is Dish d)
-            {
-                d.Cost = cost;
-                return true;
-            }
-            return false;
+            var resultGet = GetDish(nameDish);
+            if (resultGet.IsFailed) return resultGet.ToResult();
+            
+            resultGet.Value.Cost = cost;
+            return Result.Ok();
+            
         }
 
-        public bool UpdateDishName(string nameDish, string newName)
+        public Result UpdateDishName(string nameDish, string newName)
         {
-            if(IsDishNameExist(newName)==false) return false;
+            if(DishNameExist(newName).IsSuccess) return Result.Fail("Nome piatto già esiste");
 
-            if (GetDish(nameDish) is Dish d)
-            {
-                d.NameDish = newName;
-                return true;
-            }
-            return false;
+            var resultGet = GetDish(nameDish);
+            if (resultGet.IsFailed) return resultGet.ToResult();
+
+            resultGet.Value.NameDish = newName;
+            return Result.Ok();
+                           
         }
-        public Dish? GetDish(string nameDish)
+        public Result<Dish> GetDish(string nameDish)
         {
-            return Menu.FirstOrDefault(x => x.NameDish == nameDish);
+            if(Menu.FirstOrDefault(x => x.NameDish == nameDish) is Dish d)
+                return Result.Ok(d);
+            return Result.Fail("Piatto non trovato");
         }
-        public bool IsDishNameExist(string nameDish)
+        public Result<Dish> DishNameExist(string nameDish)
         {
-            return Menu.FirstOrDefault(x => x.NameDish == nameDish) is not null;
+            if (Menu.FirstOrDefault(x => x.NameDish == nameDish) is Dish d)
+                return Result.Ok(d);
+            return Result.Fail("Piatto non esiste");
         }
 
     }

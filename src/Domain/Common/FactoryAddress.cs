@@ -6,8 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Common
-{
+namespace Domain.Common;
 
     public class Address:IEqual<Address>
     {
@@ -15,26 +14,26 @@ namespace Domain.Common
         public string Via { get; init; }
         public int AddressNumber { get; init; }
 
-        private Address(string City, string Via, int AddressNumber)
-        {
-            this.City = City;
-            this.Via = Via;
-            this.AddressNumber = AddressNumber;
-        }
+    private Address(string City, string Via, int AddressNumber)
+    {
+        this.City = City;
+        this.Via = Via;
+        this.AddressNumber = AddressNumber;
+    }
 
-        public static Result<Address> New(string City, string Via, int AddressNumber)
-        {
-            if (IsValid(City, Via, AddressNumber))
-                return new Address(City, Via, AddressNumber);
+    public static Result<Address> New(string city, string via, int addressNumber)
+    {
+        if (IsValid(city, via, addressNumber))
+            return new Address(city, via, addressNumber);
 
-            return Result.Fail("Parametri di creazione indirizzo non validi ");
-        }
+        return Result.Fail("Parametri di creazione indirizzo non validi ");
+    }
 
-        internal static bool IsValid(string City, string Via, int AddressNumber)
-        {
-            if (string.IsNullOrEmpty(Via)) return false;
-            if (AddressNumber <= 0) return false;
-            if (string.IsNullOrEmpty(City)) return false;
+    private static bool IsValid(string city, string via, int addressNumber)
+    {
+        if (string.IsNullOrEmpty(via)) return false;
+        if (addressNumber <= 0) return false;
+        if (string.IsNullOrEmpty(city)) return false;
 
             return true;
         }
@@ -46,4 +45,3 @@ namespace Domain.Common
                    AddressNumber.Equals(other?.AddressNumber);
         }
     }
-}
