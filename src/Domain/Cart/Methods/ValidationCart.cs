@@ -32,12 +32,12 @@ namespace Domain.Cart
             if (string.IsNullOrEmpty(name)) return Result.Fail("Nome Dish non valido");
             return Result.Ok();
         }
-        private static Result DishCostIsValid(float cost)
+        private static Result DishCostIsValid(decimal cost)
         {
             if (cost <= 0) return Result.Fail("Cost dish non valido");
             return Result.Ok();
         }
-        private static Result IngredientCostIsValid(float cost)
+        private static Result IngredientCostIsValid(decimal cost)
         {
             if (cost <= 0) return Result.Fail("Cost dish non valido");
             return Result.Ok();

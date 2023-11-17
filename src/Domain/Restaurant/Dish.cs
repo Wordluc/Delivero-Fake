@@ -6,7 +6,7 @@
         public Guid Id { get; internal set; } = Guid.NewGuid();
         public string NameDish { get; internal set; }
         public string Type { get; internal set; }
-        public float Cost { get; internal set; }
+        public decimal Cost { get; internal set; }
         public List<Ingredient> Ingredients { get; internal set; }
         internal Dish() { }
 

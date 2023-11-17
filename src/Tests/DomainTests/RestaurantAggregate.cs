@@ -57,8 +57,8 @@ namespace DomainTests
             var address = Address.New("mussomeli", "Via bla bla", 55);
 
             Restaurant restaurant = Restaurant.New("trattotrai", address.Value).Value;
-            var dish=restaurant.AddNewDish("cous cous", 10, "First");
-            restaurant.AddNewDish("cous cous", 10, "First").IsFailed.Should().BeTrue();
+            restaurant.AddNewDish("cous cous", 10, "First");
+            restaurant.AddNewDish("cous cous", 10, "First").IsSuccess.Should().BeFalse();
 
         }
 
@@ -76,7 +76,7 @@ namespace DomainTests
             
             var r = restaurant.AddIngredient("cous cous", ingredient);
 
-            r.Should().Be(false);
+            r.IsSuccess.Should().Be(false);
         }
         [Fact]
         public void CreateIngridient_WithIncorrectName()
@@ -93,7 +93,7 @@ namespace DomainTests
                            });
             var r = restaurant.AddIngredient("cous cous",ingredient);
 
-            r.Should().Be(false);
+            r.IsSuccess.Should().Be(false);
         }
 
     }

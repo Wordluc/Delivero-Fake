@@ -19,9 +19,9 @@ namespace Domain.Cart
                 SelectedDishes = new()
             });
         }
-        private float CalculateTotalCostCart()
+        private decimal CalculateTotalCostCart()
         {
-            float totalCost = 0;
+            decimal totalCost = 0;
             foreach (var item in SelectedDishes)
             {
                 totalCost += item.TotalCost;
