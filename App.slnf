@@ -1,0 +1,12 @@
+{
+  "solution": {
+    "path": "src\\Core\\Core.sln",
+    "projects": [
+      "..\\Api\\Api.csproj",
+      "..\\Domain\\Domain.csproj",
+      "..\\Repository\\Repository.csproj",
+      "..\\Tests\\DomainTests\\DomainTests.csproj",
+      "Application.csproj"
+    ]
+  }
+}

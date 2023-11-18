@@ -11,7 +11,7 @@ namespace Repository
     {
         public static IServiceCollection AddRepository(this IServiceCollection i)
         {
-            i.AddTransient<IRepository, Repository>();
+            i.AddSingleton<IRepository, Repository>();
             return i;
         }
     }
