@@ -1,9 +1,11 @@
 ﻿using MediatR;
-using SimpleSoft.Mediator;
 using FluentResults;
+using System.Runtime.Serialization;
+
 namespace Application.Command.newRestaurant
 {
-    public class NewRestaurantCommands:Command<Result<NewRestaurantResult>>
+    [DataContract]
+    public class NewRestaurantCommands: IRequest<Result<NewRestaurantResult>>
     {
         public required string Name { get; init; }
         public required AddressCommand Address { get; init; }

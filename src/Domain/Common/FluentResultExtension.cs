@@ -15,5 +15,6 @@ namespace Domain.Common
             if (firstResult.IsFailed) return nextResult.WithReasons(firstResult.Reasons);
             return nextResult;
         }
+     
     }
 }
