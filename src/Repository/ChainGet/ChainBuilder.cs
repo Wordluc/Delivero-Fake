@@ -9,8 +9,8 @@ namespace Repository.ChainGet
 {
     internal class ChainBuilder<T>
     {
-        private IChain<T> head;
-        private IChain<T> tail;
+        private IChain<T>? head;
+        private IChain<T>? tail;
         public ChainBuilder<T> AddChain(IChain<T> chain)
         {
             if (head is null)
@@ -20,13 +20,17 @@ namespace Repository.ChainGet
             }
             else
             {
-                tail._queue = chain;
+                tail!._queue = chain;
                 tail = chain;
             }
             return this;
         }
         public List<T> RunAll(CommandGet cmd, IEnumerable<T> collection)
         {
+            if(head is null){
+                Console.WriteLine("Chain non configurata");
+                return new List<T>();
+            }
             return head.TryToExecute(cmd, collection).ToList();
         }
     }

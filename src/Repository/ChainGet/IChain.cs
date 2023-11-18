@@ -11,7 +11,7 @@ namespace Repository.ChainGet
 {
     internal abstract class IChain<T>
     {
-        internal IChain<T> _queue;
+        internal IChain<T>? _queue;
         protected abstract bool CheckToExecute(CommandGet cmd);
         protected abstract IEnumerable<T> Execute(CommandGet cmd, IEnumerable<T> collection);
         public IEnumerable<T> TryToExecute(CommandGet cmd, IEnumerable<T> collection)

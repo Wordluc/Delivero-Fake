@@ -10,8 +10,8 @@ namespace Application.Command
     {
         public class AddressCommand
         {
-            public string City { get; init; }
-            public string Via { get; init; }
+            public string? City { get; init; }
+            public string? Via { get; init; }
             public int AddressNumber { get; init; }
         }
     }
