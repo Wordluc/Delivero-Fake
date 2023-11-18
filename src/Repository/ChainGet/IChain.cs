@@ -1,6 +1,5 @@
 ﻿using Application;
 using Domain.Restaurant;
-using Repository.GetRestaurantChain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,15 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.GetRestaurant
+namespace Repository.ChainGet
 {
-    internal abstract class IChain<T>{
-        protected IChain<T> _queue;
-        public IChain<T> AddChain(IChain<T> chain)
-        {
-            _queue=chain;
-            return this;
-        }
+    internal abstract class IChain<T>
+    {
+        internal IChain<T> _queue;
         protected abstract bool CheckToExecute(CommandGet cmd);
         protected abstract IEnumerable<T> Execute(CommandGet cmd, IEnumerable<T> collection);
         public IEnumerable<T> TryToExecute(CommandGet cmd, IEnumerable<T> collection)
@@ -37,6 +32,6 @@ namespace Repository.GetRestaurant
                 else
                     return collection;
             }
-        } 
+        }
     }
 }

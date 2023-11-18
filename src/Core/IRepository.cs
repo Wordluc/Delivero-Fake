@@ -1,5 +1,6 @@
 ﻿using Domain.Restaurant;
 using Microsoft.Extensions.DependencyInjection;
+using Repository;
 using System.Reflection;
 
 namespace Application
@@ -7,7 +8,7 @@ namespace Application
     public interface IRepository
     {
         public Task AddRestaurant(Restaurant r);
-        public Task<List<Restaurant>> GetRestaurants(string? name,string? city, string? via, int? addressNumber);
+        public Task<List<Restaurant>> GetRestaurants(CommandGet cmd);
     }
     public static class InjectMedietor{
         public static IServiceCollection AddhandlerMediator(this IServiceCollection i)

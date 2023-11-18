@@ -27,7 +27,7 @@ app.MapPost("/Restaurant/add", async ([FromBody] NewRestaurantCommands c, IMedia
 });
 
 
-app.MapGet("/Restaurant/get", async ([FromBody] GetRestaurantCommands c, IMediator m) =>
+app.MapPost("/Restaurant/get", async ([FromBody] GetRestaurantCommands c, IMediator m) =>
 {
 
     var result = await m.Send(c);

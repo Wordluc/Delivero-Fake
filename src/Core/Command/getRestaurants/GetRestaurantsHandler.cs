@@ -3,6 +3,7 @@ using Domain.Common;
 using Domain.Restaurant;
 using FluentResults;
 using MediatR;
+using Repository;
 
 namespace Application.Command.getRestaurant;
 public class GetRestaurantsHandler : IRequestHandler<GetRestaurantCommands, Result<List<Restaurant>>>
@@ -12,12 +13,16 @@ public class GetRestaurantsHandler : IRequestHandler<GetRestaurantCommands, Resu
 
     public async Task<Result<List<Restaurant>>> Handle(GetRestaurantCommands cmd, CancellationToken cancellationToken)
     {
-        var r = await _repository.GetRestaurants(cmd.Name,
-                                                 cmd.Address?.City,
-                                                 cmd.Address?.Via,
-                                                 cmd.Address?.AddressNumber);
+        CommandGet cmdGet = new()
+        {
+            AddressNumber = cmd.Address?.AddressNumber,
+            City = cmd.Address?.City,
+            Via = cmd.Address?.Via,
+            Name = cmd.Name,
+        };
+        var r = await _repository.GetRestaurants(cmdGet);
         if (r.Count() <= 0)
-            return Result.Fail("Non vi sono ristorante trovato");
+            return Result.Fail("Nessun ristorante trovato con i seguenti criteri");
         return Result.Ok(r);
 
     }

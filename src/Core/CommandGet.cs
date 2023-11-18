@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.GetRestaurantChain
+namespace Repository
 {
-    internal class CommandGet
+    public class CommandGet
     {
         public string? Name { get; init; }
         public string? City { get; init; }

@@ -1,11 +1,11 @@
 ﻿using Application;
 using Domain.Restaurant;
-using Repository.GetRestaurant;
-using Repository.GetRestaurantChain;
-using Repository.GetRestaurantChain.ByLocation;
+using Repository.ChainGet;
+using Repository.ChainGet.GetRestaurantChain;
+using Repository.ChainGet.GetRestaurantChain.ByLocation;
 
 namespace Repository
-{ 
+{
 
     public class Repository : IRepository
     {
@@ -14,21 +14,15 @@ namespace Repository
         {
             return Task.Run(()=>restaurants.Add(r));
         }
-        public async Task<List<Restaurant>> GetRestaurants(string? name,string? city,string? via,int? addressNumber)
+        public async Task<List<Restaurant>> GetRestaurants(CommandGet cmd)
         {
-            CommandGet cmd = new CommandGet() {
-                AddressNumber = addressNumber,
-                City = city,
-                Via = via ,
-                Name=name
-            };
+            ChainBuilder<Restaurant> head = new ChainBuilder<Restaurant> ()
+                                      .AddChain(new ChainGetByName<Restaurant>())
+                                      .AddChain(new ChainGetByAddress<Restaurant>())
+                                      .AddChain(new ChainGetByVia<Restaurant>())
+                                      .AddChain(new ChainGetByCity<Restaurant>());
 
-            IChain<Restaurant> head = new ChainGetByName<Restaurant>()
-                                      .AddChain(new ChainGetByAddress<Restaurant>()
-                                      .AddChain(new ChainGetByVia<Restaurant>()
-                                      .AddChain(new ChainGetByCity<Restaurant>())));
-
-            return await Task.Run(()=>head.TryToExecute(cmd, restaurants).ToList());
+            return await Task.Run(()=>head.RunAll(cmd, restaurants));
         }
     }
 }

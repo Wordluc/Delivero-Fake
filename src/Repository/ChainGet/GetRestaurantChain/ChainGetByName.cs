@@ -1,12 +1,11 @@
 ﻿using Domain.Restaurant;
-using Repository.GetRestaurant;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.GetRestaurantChain
+namespace Repository.ChainGet.GetRestaurantChain
 {
     internal class ChainGetByName<T> : IChain<T> where T : Restaurant
     {
