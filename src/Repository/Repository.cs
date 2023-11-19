@@ -1,8 +1,8 @@
 ﻿using Application;
 using Domain.Restaurant;
 using Repository.ChainGet;
-using Repository.ChainGet.GetRestaurantChain;
-using Repository.ChainGet.GetRestaurantChain.ByLocation;
+using Repository.ChainGet.GetRestaurantType;
+using Repository.ChainGet.GetRestaurantType.ByLocation;
 
 namespace Repository
 {
@@ -16,13 +16,12 @@ namespace Repository
         }
         public async Task<List<Restaurant>> GetRestaurants(CommandGet cmd)
         {
-            ChainBuilder<Restaurant> head = new ChainBuilder<Restaurant> ()
-                                            .AddChain(new ChainGetByName<Restaurant>())
-                                            .AddChain(new ChainGetByAddress<Restaurant>())
-                                            .AddChain(new ChainGetByVia<Restaurant>())
-                                            .AddChain(new ChainGetByCity<Restaurant>());
-
-            return await Task.Run(()=>head.RunAll(cmd, restaurants));
+            IChain<Restaurant> head = new ChainGetByName<Restaurant>();
+            head.AddChain(new ChainGetByAddress<Restaurant>())
+                .AddChain(new ChainGetByVia<Restaurant>())
+                .AddChain(new ChainGetByCity<Restaurant>());
+        
+            return await Task.Run(()=>head.TryToExecute(cmd, restaurants).ToList());
         }
     }
 }

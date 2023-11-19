@@ -6,15 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.ChainGet.GetRestaurantChain.ByLocation
+namespace Repository.ChainGet.GetRestaurantType.ByLocation
 {
-    internal class ChainGetByAddress<T> : IChain<T> where T : Restaurant
+    internal class ChainGetByVia<T> : IChain<T> where T : Restaurant
     {
-        protected override bool CheckToExecute(CommandGet cmd)
+        protected override bool CheckCondition(CommandGet cmd)
         {
             if (cmd.City is null) return false;
             if (cmd.Via is null) return false;
-            if (cmd.AddressNumber is null or 0) return false;
             return true;
         }
 
@@ -22,8 +21,7 @@ namespace Repository.ChainGet.GetRestaurantChain.ByLocation
         {
             return collection.Where(x =>
                                         x.Address.City == cmd.City &&
-                                        x.Address.Via == cmd.Via &&
-                                        x.Address.AddressNumber == cmd.AddressNumber
+                                        x.Address.Via == cmd.Via
                                     );
         }
     }

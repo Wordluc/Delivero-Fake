@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.ChainGet.GetRestaurantChain
+namespace Repository.ChainGet.GetRestaurantType
 {
     internal class ChainGetByName<T> : IChain<T> where T : Restaurant
     {
-        protected override bool CheckToExecute(CommandGet cmd)
+        protected override bool CheckCondition(CommandGet cmd)
         {
             if (cmd.Name is null) return false;
             return true;

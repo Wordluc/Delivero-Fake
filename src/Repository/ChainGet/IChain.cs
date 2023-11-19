@@ -11,27 +11,23 @@ namespace Repository.ChainGet
 {
     internal abstract class IChain<T>
     {
-        internal IChain<T>? _queue;
-        protected abstract bool CheckToExecute(CommandGet cmd);
+        private IChain<T>? next;
+        public IChain<T> AddChain(IChain<T> chain){
+            next=chain;
+            return chain;
+        }
+
+        protected abstract bool CheckCondition(CommandGet cmd);
         protected abstract IEnumerable<T> Execute(CommandGet cmd, IEnumerable<T> collection);
         public IEnumerable<T> TryToExecute(CommandGet cmd, IEnumerable<T> collection)
         {
-
-            if (CheckToExecute(cmd))
+            if (CheckCondition(cmd))
             {
                 var r = Execute(cmd, collection);
-                if (_queue is not null)
-                    return _queue.TryToExecute(cmd, r);
-                else
-                    return r;
+                return next?.TryToExecute(cmd, r)??r;             
             }
             else
-            {
-                if (_queue is not null)
-                    return _queue.TryToExecute(cmd, collection);
-                else
-                    return collection;
-            }
+                return next?.TryToExecute(cmd,collection)??collection;  
         }
     }
 }
