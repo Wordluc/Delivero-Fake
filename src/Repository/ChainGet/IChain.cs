@@ -13,8 +13,11 @@ namespace Repository.ChainGet
     {
         private IChain<T>? next;
         public IChain<T> AddChain(IChain<T> chain){
-            next=chain;
-            return chain;
+            if(next is not null)
+                next.AddChain(chain);
+            else
+                next=chain;
+            return this;
         }
 
         protected abstract bool CheckCondition(CommandGet cmd);
