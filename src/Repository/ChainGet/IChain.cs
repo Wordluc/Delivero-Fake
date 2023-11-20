@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Repository.ChainGet
 {
-    internal abstract class IChain<T>
+    internal abstract class IChain<T,C>
     {
-        private IChain<T>? next;
-        public IChain<T> AddChain(IChain<T> chain){
+        private IChain<T,C>? next;
+        public IChain<T,C> AddChain(IChain<T,C> chain){
             if(next is not null)
                 next.AddChain(chain);
             else
@@ -20,9 +20,9 @@ namespace Repository.ChainGet
             return this;
         }
 
-        protected abstract bool CheckCondition(CommandGet cmd);
-        protected abstract IEnumerable<T> Execute(CommandGet cmd, IEnumerable<T> collection);
-        public IEnumerable<T> TryToExecute(CommandGet cmd, IEnumerable<T> collection)
+        protected abstract bool CheckCondition(C cmd);
+        protected abstract IEnumerable<T> Execute(C cmd, IEnumerable<T> collection);
+        public IEnumerable<T> TryToExecute(C cmd, IEnumerable<T> collection)
         {
             if (CheckCondition(cmd))
             {

@@ -13,7 +13,7 @@ public class GetRestaurantsHandler : IRequestHandler<GetRestaurantCommands, Resu
 
     public async Task<Result<List<Restaurant>>> Handle(GetRestaurantCommands cmd, CancellationToken cancellationToken)
     {
-        CommandGet cmdGet = new()
+        GetRestaurantsParams cmdGet = new()
         {
             AddressNumber = cmd.Address?.AddressNumber,
             City = cmd.Address?.City,
@@ -22,7 +22,7 @@ public class GetRestaurantsHandler : IRequestHandler<GetRestaurantCommands, Resu
         };
         var r = await _repository.GetRestaurants(cmdGet);
         if (r.Count() <= 0)
-            return Result.Fail("Nessun ristorante trovato con i seguenti criteri");
+            return Result.Fail("Nessun ristorante trovato con i seguenti parametri");
         return Result.Ok(r);
 
     }

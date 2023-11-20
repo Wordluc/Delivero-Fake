@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class CommandGet
+    public class GetRestaurantsParams
     {
         public string? Name { get; init; }
         public string? City { get; init; }

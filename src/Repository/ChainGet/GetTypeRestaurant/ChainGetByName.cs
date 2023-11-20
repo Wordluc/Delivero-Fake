@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Repository.ChainGet.GetRestaurantType
 {
-    internal class ChainGetByName<T> : IChain<T> where T : Restaurant
+    internal class GetRestaurantByName<T,C> : IChain<T,C> where T : Restaurant where C:GetRestaurantsParams
     {
-        protected override bool CheckCondition(CommandGet cmd)
+        protected override bool CheckCondition(C cmd)
         {
             if (cmd.Name is null) return false;
             return true;
         }
 
-        protected override IEnumerable<T> Execute(CommandGet cmd, IEnumerable<T> collection)
+        protected override IEnumerable<T> Execute(C cmd, IEnumerable<T> collection)
         {
             return collection.Where(x => x.Name == cmd.Name);
         }

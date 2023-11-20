@@ -8,7 +8,7 @@ namespace Application
     public interface IRepository
     {
         public Task AddRestaurant(Restaurant r);
-        public Task<List<Restaurant>> GetRestaurants(CommandGet cmd);
+        public Task<List<Restaurant>> GetRestaurants(GetRestaurantsParams cmd);
     }
     public static class InjectMedietor{
         public static IServiceCollection AddhandlerMediator(this IServiceCollection i)

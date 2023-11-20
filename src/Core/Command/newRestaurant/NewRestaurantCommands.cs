@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using FluentResults;
 using System.Runtime.Serialization;
-using static Application.Command.ElemetalCommand;
 
 namespace Application.Command.newRestaurant
 {

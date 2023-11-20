@@ -14,12 +14,12 @@ namespace Repository
         {
             return Task.Run(()=>restaurants.Add(r));
         }
-        public async Task<List<Restaurant>> GetRestaurants(CommandGet cmd)
+        public async Task<List<Restaurant>> GetRestaurants(GetRestaurantsParams cmd)
         {
-            IChain<Restaurant> head = new ChainGetByName<Restaurant>()
-                                          .AddChain(new ChainGetByAddress<Restaurant>())
-                                          .AddChain(new ChainGetByVia<Restaurant>())
-                                          .AddChain(new ChainGetByCity<Restaurant>());
+            IChain<Restaurant,GetRestaurantsParams> head = new GetRestaurantByName<Restaurant,GetRestaurantsParams>()
+                                                               .AddChain(new GetRestaurantByAddress())
+                                                               .AddChain(new GetRestaurantByVia())
+                                                               .AddChain(new GetRestaurantByCity());
         
             return await Task.Run(()=>head.TryToExecute(cmd, restaurants).ToList());
         }

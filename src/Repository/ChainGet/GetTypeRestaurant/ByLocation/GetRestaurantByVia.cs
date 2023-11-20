@@ -8,20 +8,22 @@ using System.Threading.Tasks;
 
 namespace Repository.ChainGet.GetRestaurantType.ByLocation
 {
-    internal class ChainGetByVia<T> : IChain<T> where T : Restaurant
+    internal class GetRestaurantByAddress: IChain<Restaurant,GetRestaurantsParams> 
     {
-        protected override bool CheckCondition(CommandGet cmd)
+        protected override bool CheckCondition(GetRestaurantsParams cmd)
         {
             if (cmd.City is null) return false;
             if (cmd.Via is null) return false;
+            if (cmd.AddressNumber is null or 0) return false;
             return true;
         }
 
-        protected override IEnumerable<T> Execute(CommandGet cmd, IEnumerable<T> collection)
+        protected override IEnumerable<Restaurant> Execute(GetRestaurantsParams cmd, IEnumerable<Restaurant> collection)
         {
             return collection.Where(x =>
                                         x.Address.City == cmd.City &&
-                                        x.Address.Via == cmd.Via
+                                        x.Address.Via == cmd.Via &&
+                                        x.Address.AddressNumber == cmd.AddressNumber
                                     );
         }
     }

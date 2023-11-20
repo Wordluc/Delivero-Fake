@@ -13,7 +13,7 @@ namespace Application.Command.newRestaurant
 
         public async Task<Result<NewRestaurantResult>> Handle(NewRestaurantCommands cmd, CancellationToken cancellationToken)
         {
-            Result<Address> addressResult = Address.New(cmd.Address.City, cmd.Address.Via, cmd.Address.AddressNumber);
+            Result<Address> addressResult = Address.New(cmd.Address.City!, cmd.Address.Via!, cmd.Address.AddressNumber);
             if (addressResult.IsFailed) return addressResult.ToResult();
 
             Result<Restaurant> restaurantResult = Restaurant.New(cmd.Name, addressResult.Value);
