@@ -1,18 +1,19 @@
+using Application;
 using Domain.Restaurant;
 using Repository;
 using Repository.ChainGet;
 
 namespace GetDishByName;
-internal class GetDishByName : IChain<Dish, GetDishParams>
+internal class GetDishByType : IChain<Dish, GetDishesParams>
 {
-    protected override bool CheckCondition(GetDishParams cmd)
+    protected override bool CheckCondition(GetDishesParams cmd)
     {
-        if(cmd.Name is null)return false;
+        if(cmd.Type is null)return false;
         return true;
     }
 
-    protected override IEnumerable<Dish> Execute(GetDishParams cmd, IEnumerable<Dish> collection)
+    protected override IEnumerable<Dish?> Execute(GetDishesParams cmd, IEnumerable<Dish?> collection)
     {
-        return collection.Where(x=>x.NameDish==cmd.Name);
+        return collection.Where(x=>x is not null && x.Type.Equals(cmd.Type));
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.ChainGet.GetRestaurantType
+namespace Repository.ChainGet.GetRestaurantBy_
 {
-    internal class GetRestaurantByName : IChain<Restaurant, GetRestaurantsParams>
+    internal class GetRestaurantsByName : IChain<Restaurant, GetRestaurantsParams>
     {
         protected override bool CheckCondition(GetRestaurantsParams cmd)
         {
@@ -17,7 +17,7 @@ namespace Repository.ChainGet.GetRestaurantType
 
         protected override IEnumerable<Restaurant?> Execute(GetRestaurantsParams cmd, IEnumerable<Restaurant?> collection)
         {
-            return collection.Where(x => x.Name == cmd.Name);
+            return collection.Where(x => x?.Name == cmd.Name);
         }
     }
 }

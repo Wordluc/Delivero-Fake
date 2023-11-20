@@ -21,8 +21,8 @@ namespace Repository.ChainGet
         }
 
         protected abstract bool CheckCondition(C cmd);
-        protected abstract IEnumerable<T> Execute(C cmd, IEnumerable<T> collection);
-        public IEnumerable<T> TryToExecute(C cmd, IEnumerable<T> collection)
+        protected abstract IEnumerable<T?> Execute(C cmd, IEnumerable<T?> collection);
+        public IEnumerable<T?> TryToExecute(C cmd, IEnumerable<T?> collection)
         {
             if (CheckCondition(cmd))
             {

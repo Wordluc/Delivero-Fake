@@ -13,7 +13,18 @@
         {
             return Id == other?.Id;
         }
-    }
+        public IEnumerable<string?> GetDishIntollerances()
+        {
+            foreach (Ingredient i in Ingredients)
+            {
+                if (i.Intolerances is null) continue;
+                foreach (Intolerance intollerance in i.Intolerances)
+                    yield return intollerance.Name;
+            }
+            yield return null;
+
+        }
+}
     public record Ingredient(string Name, List<Intolerance>? Intolerances);
     public record Intolerance(string Name, string Description);
     public enum TypeDish
