@@ -9,6 +9,8 @@ namespace Application
     {
         public Task AddRestaurant(Restaurant r);
         public Task<List<Restaurant>> GetRestaurants(GetRestaurantsParams cmd);
+        public Task<List<Restaurant>> GetDishFromRestaurants(GetRestaurantsParams cmd);
+
     }
     public static class InjectMedietor{
         public static IServiceCollection AddhandlerMediator(this IServiceCollection i)
