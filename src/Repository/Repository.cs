@@ -6,26 +6,21 @@ using Repository.ChainGet;
 using Repository.ChainGet.GetRestaurantType;
 using Repository.ChainGet.GetRestaurantType.ByLocation;
 
-namespace Repository
-{
-
-    public class Repository : IRepository
-    {
+namespace Repository;
+    public class Repository : IRepository{
         internal List<Restaurant> restaurants = new List<Restaurant>();
         public  Task AddRestaurant(Restaurant r)
         {
             return Task.Run(()=>restaurants.Add(r));
         }
-
-        public Task<List<Restaurant>> GetDishFromRestaurants(GetDishesParams cmd)
+        public Task<List<Dish>> GetDishesFromRestaurants(GetDishesParams cmd)
         {
-            var restaurant = restaurants.Where(x=>x.Id==cmd.IdRestaurant).FirstOrDefault();
-            if (restaurant is null) return Task.Run(null);
+             var restaurant = restaurants.Where(x=>x.Id==cmd.IdRestaurant).FirstOrDefault();
+            if (restaurant is null) return Task.Run(()=>Enumerable.Empty<Dish>().ToList());
             IChain<Dish, GetDishesParams> head = new GetDishByIntollerance()
                                                  .AddChain(new GetDishByType());
 
-            return await Task.Run(() => head.TryToExecute(cmd, restaurants).ToList());
-
+            return Task.Run(() => head.TryToExecute(cmd, restaurant.Menu).ToList());
         }
 
         public async Task<List<Restaurant>> GetRestaurants(GetRestaurantsParams cmd)
@@ -38,4 +33,3 @@ namespace Repository
             return await Task.Run(()=>head.TryToExecute(cmd, restaurants).ToList());
         }
     }
-}

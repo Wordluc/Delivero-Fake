@@ -15,7 +15,7 @@ namespace Repository.ChainGet.GetRestaurantType
             return true;
         }
 
-        protected override IEnumerable<Restaurant?> Execute(GetRestaurantsParams cmd, IEnumerable<Restaurant?> collection)
+        protected override IEnumerable<Restaurant> Execute(GetRestaurantsParams cmd, IEnumerable<Restaurant> collection)
         {
             return collection.Where(x => x.Name == cmd.Name);
         }

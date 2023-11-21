@@ -12,7 +12,7 @@ internal class GetDishByType : IChain<Dish, GetDishesParams>
         return true;
     }
 
-    protected override IEnumerable<Dish?> Execute(GetDishesParams cmd, IEnumerable<Dish?> collection)
+    protected override IEnumerable<Dish> Execute(GetDishesParams cmd, IEnumerable<Dish> collection)
     {
         return collection.Where(x=>x is not null && x.Type.Equals(cmd.Type));
     }

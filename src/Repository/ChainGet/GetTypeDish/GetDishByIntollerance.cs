@@ -14,16 +14,15 @@ internal class GetDishByIntollerance : IChain<Dish, GetDishesParams>
         return true;
     }
 
-    protected override IEnumerable<Dish?> Execute(GetDishesParams cmd, IEnumerable<Dish?> collection)
+    protected override IEnumerable<Dish> Execute(GetDishesParams cmd, IEnumerable<Dish> collection)
     {
-        return collection.Select(x => PassIntollerance(cmd.Intollerance!,x));
+        return collection.SkipWhile(x=>PassIntollerance(cmd.Intollerance!, x));
 
     }
-    private Dish? PassIntollerance(List<string> intollerances,Dish? dish)
+    private bool PassIntollerance(IEnumerable<string> intollerances,Dish dish)
     {
-        if (dish is null) return null;    
         foreach(var i in intollerances)
-              if (dish.GetDishIntollerances().Contains(i)) return null;
-        return dish;
+              if (dish.GetDishIntollerances().Contains(i)) return false;
+        return true;
     }
 }

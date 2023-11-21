@@ -18,12 +18,12 @@ namespace Repository.ChainGet.GetRestaurantBy_
             return true;
         }
 
-        protected override IEnumerable<Restaurant?> Execute(GetRestaurantsParams cmd, IEnumerable<Restaurant?> collection)
+        protected override IEnumerable<Restaurant> Execute(GetRestaurantsParams cmd, IEnumerable<Restaurant> collection)
         {
             return collection.Where(x =>
-                                        x?.Address.City == cmd.City &&
-                                        x?.Address.Via == cmd.Via &&
-                                        x?.Address.AddressNumber == cmd.AddressNumber
+                                        x.Address.City == cmd.City &&
+                                        x.Address.Via == cmd.Via &&
+                                        x.Address.AddressNumber == cmd.AddressNumber
                                     );
         }
     }
